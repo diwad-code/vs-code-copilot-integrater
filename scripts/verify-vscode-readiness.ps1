@@ -102,21 +102,31 @@ foreach ($command in $optionalCommands) {
 }
 
 $settingsPath = Join-Path $workspaceRoot '.vscode/settings.json'
-$settingsContent = Get-Content $settingsPath -Raw
-if ($settingsContent -match 'gpt-5\.3-codex') {
-    Add-Result -Results $results -Status 'PASS' -Message 'Domyślny model GPT-5.3-Codex jest ustawiony w settings.json'
+if (Test-Path $settingsPath) {
+    $settingsContent = Get-Content $settingsPath -Raw
+    if ($settingsContent -match 'gpt-5\.3-codex') {
+        Add-Result -Results $results -Status 'PASS' -Message 'Domyślny model GPT-5.3-Codex jest ustawiony w settings.json'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brak ustawienia GPT-5.3-Codex w settings.json'
+    }
 }
 else {
-    Add-Result -Results $results -Status 'FAIL' -Message 'Brak ustawienia GPT-5.3-Codex w settings.json'
+    Add-Result -Results $results -Status 'FAIL' -Message 'Plik .vscode/settings.json nie istnieje – nie można zweryfikować ustawienia GPT-5.3-Codex'
 }
 
 $setupDocPath = Join-Path $workspaceRoot 'docs/SETUP.md'
-$setupDocContent = Get-Content $setupDocPath -Raw
-if ($setupDocContent -match 'GPT-5\.4') {
-    Add-Result -Results $results -Status 'PASS' -Message 'Dokumentacja opisuje użycie GPT-5.4'
+if (Test-Path $setupDocPath) {
+    $setupDocContent = Get-Content $setupDocPath -Raw
+    if ($setupDocContent -match 'GPT-5\.4') {
+        Add-Result -Results $results -Status 'PASS' -Message 'Dokumentacja opisuje użycie GPT-5.4'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brak opisu użycia GPT-5.4 w dokumentacji'
+    }
 }
 else {
-    Add-Result -Results $results -Status 'FAIL' -Message 'Brak opisu użycia GPT-5.4 w dokumentacji'
+    Add-Result -Results $results -Status 'FAIL' -Message 'Brak pliku dokumentacji docs/SETUP.md – nie można zweryfikować opisu GPT-5.4'
 }
 
 $envVars = @('GITHUB_TOKEN', 'BRAVE_API_KEY', 'MAGIC_UI_API_KEY')
