@@ -1,0 +1,11 @@
+# Lokalne artefakty VS Code / MCP
+data/local.db
+*.backup_*
+
+# Node / Python / build
+node_modules/
+dist/
+build/
+coverage/
+__pycache__/
+.pytest_cache/

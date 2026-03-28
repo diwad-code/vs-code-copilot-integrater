@@ -157,12 +157,13 @@
   // ── INFORMACJE INSTALACYJNE ────────────────────────────────
   "_install_instructions": {
     "note": "Uruchom scripts/install-mcp-servers.ps1 aby automatycznie zainstalować wszystkie serwery MCP",
-    "manual_install": "npm install -g @modelcontextprotocol/server-filesystem @modelcontextprotocol/server-github @modelcontextprotocol/server-memory @modelcontextprotocol/server-brave-search @modelcontextprotocol/server-puppeteer @modelcontextprotocol/server-sqlite @modelcontextprotocol/server-sequential-thinking",
+    "_manual_install_note": "manual_install pozostaje w jednej linii, aby użytkownik mógł łatwo skopiować całe polecenie",
+    "manual_install": "npm install -g @modelcontextprotocol/server-filesystem @modelcontextprotocol/server-github @modelcontextprotocol/server-memory @modelcontextprotocol/server-brave-search @modelcontextprotocol/server-puppeteer @modelcontextprotocol/server-sqlite @modelcontextprotocol/server-sequential-thinking @upstash/context7-mcp @playwright/mcp @21st-dev/magic-mcp",
     "vscode_config_location": "Skopiuj sekcję 'servers' do: ~/.vscode/mcp.json lub VS Code Settings > MCP",
     "required_env_vars": [
       "GITHUB_TOKEN — Personal Access Token z GitHub (Settings > Developer Settings)",
       "BRAVE_API_KEY — Klucz API z brave.com/search/api (darmowy plan)",
-      "MAGIC_UI_API_KEY — Klucz API z magic.dev (opcjonalny)"
+      "MAGIC_UI_API_KEY — Klucz API z 21st.dev (opcjonalny)"
     ]
   }
 }

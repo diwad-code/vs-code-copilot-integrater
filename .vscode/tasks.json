@@ -212,6 +212,54 @@
         "clear": true
       }
     },
+    {
+      // Instaluje GitHub CLI + rozszerzenie gh-copilot
+      "label": "SETUP: Zainstaluj Copilot CLI",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/install-copilot-cli.ps1"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      // Ustawia brakujące zmienne środowiskowe dla MCP i Copilota
+      "label": "SETUP: Ustaw zmienne środowiskowe",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/set-environment-variables.ps1"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      // Wykonuje końcową kontrolę kompletności projektu i środowiska
+      "label": "VERIFY: Sprawdź gotowość workspace",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/verify-vscode-readiness.ps1"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
 
     {
       // Uruchamia pełny setup wszystkiego
@@ -219,7 +267,8 @@
       "dependsOn": [
         "SETUP: Zainstaluj środowisko",
         "SETUP: Zainstaluj rozszerzenia VS Code",
-        "SETUP: Zainstaluj serwery MCP"
+        "SETUP: Zainstaluj serwery MCP",
+        "SETUP: Zainstaluj Copilot CLI"
       ],
       "dependsOrder": "sequence",
       "group": {

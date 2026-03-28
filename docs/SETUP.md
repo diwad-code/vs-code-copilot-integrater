@@ -39,7 +39,10 @@ cd C:\Projekty\vs-code-copilot-integrater
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup-environment.ps1   # Narzędzia deweloperskie
 .\scripts\install-extensions.ps1  # Rozszerzenia VS Code
+.\scripts\install-copilot-cli.ps1 # GitHub CLI + gh-copilot
 .\scripts\install-mcp-servers.ps1 # Serwery MCP
+.\scripts\set-environment-variables.ps1 # Zmienne środowiskowe
+.\scripts\verify-vscode-readiness.ps1 # Końcowa kontrola
 
 # 4. Uruchom ponownie VS Code
 ```
@@ -120,6 +123,12 @@ Copy-Item mcp\mcp-config.json "$env:APPDATA\Code\User\mcp.json"
 
 Ustaw wymagane zmienne środowiskowe (niezbędne dla niektórych MCP serwerów):
 
+**Najwygodniej:**
+
+```powershell
+.\scripts\set-environment-variables.ps1
+```
+
 ```powershell
 # GitHub Personal Access Token (zakres: repo, read:user)
 # Utwórz na: https://github.com/settings/tokens
@@ -137,10 +146,71 @@ Ustaw wymagane zmienne środowiskowe (niezbędne dla niektórych MCP serwerów):
     'User'
 )
 
+# MAGIC UI API Key (opcjonalne — dla MCP magic-ui)
+# Utwórz na: https://21st.dev
+[Environment]::SetEnvironmentVariable(
+    'MAGIC_UI_API_KEY',
+    'mui_twój_klucz_tutaj',
+    'User'
+)
+
 # Przeładuj zmienne w PowerShell (bez restartu)
 $env:GITHUB_TOKEN = [Environment]::GetEnvironmentVariable('GITHUB_TOKEN', 'User')
 $env:BRAVE_API_KEY = [Environment]::GetEnvironmentVariable('BRAVE_API_KEY', 'User')
+$env:MAGIC_UI_API_KEY = [Environment]::GetEnvironmentVariable('MAGIC_UI_API_KEY', 'User')
 ```
+
+---
+
+## 🤖 Copilot CLI (gh-copilot) — konfiguracja pod GPT-5.3-Codex i GPT-5.4
+
+To repo jest przygotowane do pracy z modelami:
+- **GPT-5.3-Codex** — implementacja kodu, refaktoryzacja, zadania terminalowe
+- **GPT-5.4** — złożone rozumowanie, planowanie, research i decyzje architektoniczne
+
+### Instalacja Copilot CLI
+
+```powershell
+# 1) Zainstaluj GitHub CLI
+winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements
+
+# 2) Dodaj rozszerzenie Copilot do GH CLI
+gh extension install github/gh-copilot
+
+# 3) Zaloguj się
+gh auth login
+
+# 4) Weryfikacja
+gh copilot --help
+```
+
+### Szybki workflow CLI
+
+```powershell
+# Kodowanie / refaktor (preferuj GPT-5.3-Codex)
+gh copilot suggest -t shell "Zaproponuj komendę do ..."
+
+# Analiza i decyzje (przełączaj na GPT-5.4 w Chat/IDE dla głębokiego reasoning)
+# W praktyce: użyj GPT-5.4 w Copilot Chat dla planów i researchu,
+# a CLI utrzymuj do szybkich operacji kodowo-terminalowych.
+```
+
+### VS Code Task
+
+W projekcie dostępny jest task:
+- `SETUP: Zainstaluj Copilot CLI`
+
+Uruchom: `Terminal > Run Task` i wybierz ten task, aby szybko przygotować CLI.
+
+---
+
+## 🪜 Bardzo dokładna instrukcja wdrożenia
+
+Jeśli chcesz przejść przez cały proces najprostszą możliwą ścieżką, otwórz:
+
+`docs/VS_CODE_STEP_BY_STEP.md`
+
+To jest pełna instrukcja „klik po kliku” i „krok po kroku”, napisana prostym językiem.
 
 ---
 
@@ -164,6 +234,9 @@ Get-Module -ListAvailable PSScriptAnalyzer, Pester, ImportExcel | Select Name, V
 # Sprawdź zainstalowane pakiety MCP
 Write-Host "`n=== Pakiety MCP ===" -ForegroundColor Cyan
 npm list -g --depth=0 2>$null | Select-String "modelcontextprotocol|context7|playwright"
+
+# Sprawdź gotowość całego workspace
+.\scripts\verify-vscode-readiness.ps1
 ```
 
 **W VS Code:**

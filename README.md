@@ -19,7 +19,7 @@
 | 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
 | 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
-| 📚 **3 Przewodniki** | Setup, Skills/Agents, Workflows |
+| 📚 **4 Przewodniki** | Setup, Skills/Agents, Workflows, wdrożenie krok po kroku |
 
 ---
 
@@ -52,17 +52,33 @@ Set-ExecutionPolicy -Scope Process Bypass
 3. Otwórz Copilot Chat: `Ctrl+Alt+I`
 4. Powiedz: **"@workspace Powitaj mnie i powiedz jakie masz możliwości"**
 
+### Krok 3b: Ustaw priorytet modeli (Copilot Chat / CLI)
+
+- **Model domyślny do implementacji:** `GPT-5.3-Codex`
+- **Model do złożonego reasoning/research:** `GPT-5.4`
+- W `.vscode/settings.json` domyślny model jest ustawiony na `gpt-5.3-codex`.
+- Dla zadań analitycznych przełączaj model ręcznie na `gpt-5.4`.
+
+### Krok 3c: Przygotuj Copilot CLI (gh-copilot)
+
+```powershell
+# VS Code Task: Terminal > Run Task > SETUP: Zainstaluj Copilot CLI
+# Lub ręcznie:
+winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements
+gh extension install github/gh-copilot
+gh auth login
+gh copilot --help
+```
+
 ### Krok 4: Ustaw zmienne środowiskowe (opcjonalne, dla MCP)
 
 ```powershell
-# GitHub Token (dla MCP GitHub) — https://github.com/settings/tokens
-[Environment]::SetEnvironmentVariable('GITHUB_TOKEN', 'ghp_...', 'User')
-
-# Brave Search Key (dla MCP search) — https://brave.com/search/api
-[Environment]::SetEnvironmentVariable('BRAVE_API_KEY', 'BSA...', 'User')
+# Najwygodniej:
+.\scripts\set-environment-variables.ps1
 ```
 
 Pełna instrukcja: [docs/SETUP.md](docs/SETUP.md)
+Bardzo szczegółowe wdrożenie: [docs/VS_CODE_STEP_BY_STEP.md](docs/VS_CODE_STEP_BY_STEP.md)
 
 ---
 
@@ -70,6 +86,9 @@ Pełna instrukcja: [docs/SETUP.md](docs/SETUP.md)
 
 ```
 vs-code-copilot-integrater/
+│
+├── data/
+│   └── .gitkeep                  ← 🗂️ Folder pod lokalną bazę SQLite / artefakty MCP
 │
 ├── .github/
 │   ├── copilot-instructions.md    ← 🧠 System prompt Copilota (KLUCZOWY PLIK)
@@ -88,23 +107,30 @@ vs-code-copilot-integrater/
 │   ├── web-development/skill.md   ← 🌐 Ekspert Web Dev
 │   ├── database/skill.md          ← 🗄️ Ekspert SQL/Oracle
 │   ├── gui-design/skill.md        ← 🎨 Ekspert GUI Design
-│   └── windows-apps/skill.md      ← 🪟 Ekspert Windows Apps
+│   ├── windows-apps/skill.md      ← 🪟 Ekspert Windows Apps
+│   └── ultimate-engineering/skill.md ← 🧠 Meta-skill 120+ umiejętności
 │
 ├── agents/
 │   ├── planning-agent.md          ← 📐 Agent planowania projektów
 │   ├── documentation-agent.md     ← 📚 Agent dokumentowania
 │   ├── code-review-agent.md       ← 🔍 Agent code review
-│   └── research-agent.md          ← 🔬 Agent badania technologii
+│   ├── research-agent.md          ← 🔬 Agent badania technologii
+│   └── orchestrator-agent.md      ← 🎛️ Agent orkiestracji pracy
 │
 ├── docs/
 │   ├── SETUP.md                   ← 📖 Instrukcja instalacji
 │   ├── SKILLS_AND_AGENTS.md       ← 🛠️ Przewodnik po skillach i agentach
-│   └── DEVELOPMENT_WORKFLOWS.md   ← 🔄 Przepływy pracy
+│   ├── DEVELOPMENT_WORKFLOWS.md   ← 🔄 Przepływy pracy
+│   ├── VS_CODE_STEP_BY_STEP.md    ← 🪜 Bardzo dokładne wdrożenie krok po kroku
+│   └── ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md ← 📚 Katalog 220+
 │
 ├── scripts/
 │   ├── setup-environment.ps1      ← 🔧 Instalacja środowiska
 │   ├── install-extensions.ps1     ← 🔌 Instalacja rozszerzeń VS Code
-│   └── install-mcp-servers.ps1    ← 🌐 Instalacja serwerów MCP
+│   ├── install-copilot-cli.ps1    ← 🤖 Instalacja GitHub CLI + gh-copilot
+│   ├── install-mcp-servers.ps1    ← 🌐 Instalacja serwerów MCP
+│   ├── set-environment-variables.ps1 ← 🔐 Ustawianie zmiennych środowiskowych
+│   └── verify-vscode-readiness.ps1 ← ✅ Ostateczna weryfikacja gotowości
 │
 ├── templates/
 │   ├── project-plan-template.md   ← 📋 Szablon planu projektu
@@ -236,6 +262,12 @@ skills/
 
 ### Dostosuj instrukcje Copilota:
 Edytuj `.github/copilot-instructions.md` — Copilot odczyta zmiany natychmiast
+
+### Użyj kompletnego katalogu:
+- `docs/ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md` zawiera:
+  - **120 skills** (programowanie, reasoning, research)
+  - **70 tools** (IDE, CI/CD, security, data, AI/MCP)
+  - **30 agent roles** (od planowania po AI eval i incident response)
 
 ---
 

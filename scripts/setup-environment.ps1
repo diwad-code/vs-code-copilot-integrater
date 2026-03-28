@@ -210,6 +210,33 @@ if (Test-Command npm) {
     }
 }
 
+# ─── COPILOT CLI — GOTOWOŚĆ DO PRACY ─────────────────────────
+Write-Log "KROK 6: Weryfikacja gotowości Copilot CLI" -Level SECTION
+
+if (Test-Command gh) {
+    Write-Log "GitHub CLI (gh) jest dostępne" -Level SUCCESS
+}
+else {
+    Write-Log "GitHub CLI (gh) nie jest zainstalowane — instaluję przez winget" -Level WARNING
+    Install-ViaWinget -PackageId 'GitHub.cli' -Name 'GitHub CLI' -TestCommand 'gh'
+}
+
+# Informacyjnie sprawdzamy czy komenda `copilot` jest dostępna jako rozszerzenie GH CLI
+try {
+    if (Test-Command gh) {
+        $ghExtensions = (gh extension list 2>$null) -join "`n"
+        if ($ghExtensions -match 'gh-copilot') {
+            Write-Log "Rozszerzenie gh-copilot jest zainstalowane" -Level SUCCESS
+        }
+        else {
+            Write-Log "Brak rozszerzenia gh-copilot — możesz dodać: gh extension install github/gh-copilot" -Level WARNING
+        }
+    }
+}
+catch {
+    Write-Log "Nie udało się zweryfikować rozszerzeń gh: $_" -Level WARNING
+}
+
 # ─── PODSUMOWANIE ────────────────────────────────────────────
 Write-Log "PODSUMOWANIE KONFIGURACJI ŚRODOWISKA" -Level SECTION
 
@@ -235,4 +262,4 @@ foreach ($tool in $tools) {
 
 Write-Host ""
 Write-Log "Środowisko deweloperskie skonfigurowane!" -Level SUCCESS
-Write-Log "Następny krok: uruchom install-extensions.ps1 i install-mcp-servers.ps1" -Level INFO
+Write-Log "Następne kroki: install-extensions.ps1, install-copilot-cli.ps1, install-mcp-servers.ps1, set-environment-variables.ps1, verify-vscode-readiness.ps1" -Level INFO

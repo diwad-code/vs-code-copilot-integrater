@@ -202,10 +202,18 @@ if (-not $SkipEnvSetup) {
   2. Lub użyj PowerShell (trwałe ustawienie):
      [Environment]::SetEnvironmentVariable('GITHUB_TOKEN', 'twój_token', 'User')
      [Environment]::SetEnvironmentVariable('BRAVE_API_KEY', 'twój_klucz', 'User')
+     [Environment]::SetEnvironmentVariable('MAGIC_UI_API_KEY', 'twój_klucz', 'User')
+  3. Aby bieżąca sesja PowerShell zobaczyła nowe wartości:
+     - uruchom nowy terminal (np. zamknij i otwórz ponownie VS Code),
+       LUB ustaw je także w tej sesji:
+       `$env:GITHUB_TOKEN = 'twój_token'`
+       `$env:BRAVE_API_KEY = 'twój_klucz'`
+       `$env:MAGIC_UI_API_KEY = 'twój_klucz'`
 
   Gdzie pobrać klucze:
   - GITHUB_TOKEN: https://github.com/settings/tokens (zakres: repo, read:user)
   - BRAVE_API_KEY: https://brave.com/search/api (darmowy plan: 2000 req/miesiąc)
+  - MAGIC_UI_API_KEY: https://21st.dev (opcjonalny, funkcje generowania UI)
 "@ -ForegroundColor Cyan
     }
     else {
@@ -222,8 +230,14 @@ $mcpConfigSource = Join-Path $PSScriptRoot "..\mcp\mcp-config.json"
 
 try {
     if (Test-Path $mcpConfigSource) {
-        # Sprawdzamy czy już istnieje konfiguracja — nie nadpisujemy bez pytania
+        # Upewniamy się, że katalog docelowy istnieje (pierwsza konfiguracja VS Code)
+        $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
+        if (-not (Test-Path $vscodeMcpDir)) {
+            New-Item -ItemType Directory -Path $vscodeMcpDir -Force | Out-Null
+        }
+
         if (Test-Path $vscodeMcpPath) {
+            # Sprawdzamy, czy już istnieje konfiguracja - nie nadpisujemy bez pytania
             Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
 
             # Tworzymy backup istniejącej konfiguracji z timestampem
