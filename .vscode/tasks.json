@@ -1,0 +1,231 @@
+{
+  // ============================================================
+  // VS Code Tasks — Automatyzacja typowych zadań
+  // Plik: .vscode/tasks.json
+  // Cel: Szybkie uruchamianie skryptów i komend przez Ctrl+Shift+B lub Ctrl+P > Run Task
+  // ============================================================
+
+  "version": "2.0.0",
+  "tasks": [
+
+    // ── POWERSHELL TASKS ──────────────────────────────────────
+
+    {
+      // Uruchamia skrypt PowerShell — otwiera dialog wyboru pliku
+      "label": "PS: Uruchom skrypt PowerShell",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${file}"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+
+    {
+      // Analizuje skrypt PS z PSScriptAnalyzer
+      "label": "PS: Analizuj kod (PSScriptAnalyzer)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-Command",
+        "if (-not (Get-Module -ListAvailable PSScriptAnalyzer)) { Install-Module PSScriptAnalyzer -Force -Scope CurrentUser }; Invoke-ScriptAnalyzer -Path '${file}' -Severity @('Error','Warning','Information')"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+
+    {
+      // Uruchamia testy Pester dla bieżącego projektu
+      "label": "PS: Uruchom testy Pester",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-Command",
+        "if (-not (Get-Module -ListAvailable Pester)) { Install-Module Pester -Force -Scope CurrentUser -SkipPublisherCheck }; Invoke-Pester -Output Detailed"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+
+    // ── NODE.JS / NPM TASKS ───────────────────────────────────
+
+    {
+      // Instaluje zależności npm
+      "label": "NPM: Zainstaluj zależności",
+      "type": "shell",
+      "command": "npm install",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+
+    {
+      // Uruchamia serwer deweloperski (npm run dev)
+      "label": "NPM: Uruchom serwer dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+
+    {
+      // Buduje projekt produkcyjny
+      "label": "NPM: Zbuduj produkcję",
+      "type": "shell",
+      "command": "npm run build",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+
+    {
+      // Uruchamia testy
+      "label": "NPM: Uruchom testy",
+      "type": "shell",
+      "command": "npm test",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      // Uruchamia linter
+      "label": "NPM: Lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+
+    // ── .NET TASKS ────────────────────────────────────────────
+
+    {
+      // Buduje projekt .NET
+      "label": ".NET: Build",
+      "type": "shell",
+      "command": "dotnet build",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+
+    {
+      // Uruchamia testy .NET
+      "label": ".NET: Test",
+      "type": "shell",
+      "command": "dotnet test",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+
+    // ── SETUP TASKS ───────────────────────────────────────────
+
+    {
+      // Uruchamia skrypt instalacji środowiska
+      "label": "SETUP: Zainstaluj środowisko",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/setup-environment.ps1"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+
+    {
+      // Instaluje rozszerzenia VS Code
+      "label": "SETUP: Zainstaluj rozszerzenia VS Code",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/install-extensions.ps1"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+
+    {
+      // Instaluje serwery MCP
+      "label": "SETUP: Zainstaluj serwery MCP",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/install-mcp-servers.ps1"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+
+    {
+      // Uruchamia pełny setup wszystkiego
+      "label": "SETUP: Pełna instalacja",
+      "dependsOn": [
+        "SETUP: Zainstaluj środowisko",
+        "SETUP: Zainstaluj rozszerzenia VS Code",
+        "SETUP: Zainstaluj serwery MCP"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,429 @@
+{
+  // ============================================================
+  // VS Code Settings — Zoptymalizowane dla GitHub Copilot Pro+
+  // Plik: .vscode/settings.json
+  // Cel: Konfiguracja maksymalnej produktywności z Copilotem
+  // ============================================================
+
+  // ─── GITHUB COPILOT — GŁÓWNA KONFIGURACJA ───────────────────
+  
+  // Włącz Copilota dla wszystkich języków programowania
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": true,
+    "yaml": true,
+    "json": true,
+    "jsonc": true,
+    "powershell": true,
+    "sql": true,
+    "javascript": true,
+    "typescript": true,
+    "html": true,
+    "css": true,
+    "scss": true,
+    "csharp": true,
+    "python": true
+  },
+
+  // Włącz sugestie inline (autouzupełnianie podczas pisania)
+  "github.copilot.inlineSuggest.enable": true,
+
+  // ─── COPILOT CHAT — KONFIGURACJA CZATU ──────────────────────
+
+  // Domyślny model — Claude Sonnet (najlepszy balans jakość/szybkość)
+  // Dostępne w Pro+: claude-sonnet-4-5, gpt-4o, gemini-2.0-flash, o3, o4-mini
+  "github.copilot.chat.defaultModel": "claude-sonnet-4-5",
+
+  // Włącz automatyczny kontekst pliku w czacie
+  "github.copilot.chat.useProjectTemplates": true,
+
+  // Lokalizacja panelu czatu — po prawej stronie
+  "github.copilot.chat.localeOverride": "pl",
+
+  // Włącz follow-up suggestions (sugestie kolejnych pytań)
+  "github.copilot.chat.followUp": "always",
+
+  // Włącz Copilot w terminalu — uzupełnianie komend
+  "github.copilot.chat.terminalChatLocation": "terminal",
+
+  // Włącz sugestie code review w Copilocie
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+
+  // Instrukcje dla generowania kodu — użyj pliku copilot-instructions.md
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions.md"
+    },
+    {
+      "text": "Komentuj każdą linię lub logiczny blok kodu w języku polskim. Używaj opisowych nazw zmiennych w języku angielskim."
+    },
+    {
+      "text": "Przed implementacją zawsze zadaj pytania wyjaśniające i przedstaw plan. Czekaj na akceptację."
+    },
+    {
+      "text": "Po zakończeniu pracy aktualizuj WORKLOG.md z opisem co zostało zrobione i co pozostaje."
+    }
+  ],
+
+  // Instrukcje dla testów
+  "github.copilot.chat.testGeneration.instructions": [
+    {
+      "text": "Twórz testy jednostkowe dla każdej funkcji publicznej. Testuj edge cases, happy path i error path."
+    },
+    {
+      "text": "Dla PowerShell używaj Pester. Dla JS/TS używaj Vitest lub Jest. Dla .NET używaj xUnit."
+    }
+  ],
+
+  // Instrukcje dla code review
+  "github.copilot.chat.reviewSelection.instructions": [
+    {
+      "text": "Sprawdź: bezpieczeństwo, wydajność, czytelność, zgodność z best practices, obsługę błędów i edge cases."
+    }
+  ],
+
+  // Instrukcje dla commit messages
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Używaj Conventional Commits: feat/fix/docs/refactor/test/chore. Pisz po angielsku. Bądź konkretny."
+    }
+  ],
+
+  // ─── COPILOT EDITS — TRYB EDYCJI WIELOPLIKOWEJ ──────────────
+
+  // Włącz Copilot Edits dla automatycznych zmian w wielu plikach
+  "github.copilot.chat.agent.thinkingTool": true,
+
+  // ─── EDITOR — USTAWIENIA EDYTORA ────────────────────────────
+
+  // Automatyczne zapisywanie po zmianie focusu
+  "files.autoSave": "onFocusChange",
+
+  // Format przy zapisie — automatyczne formatowanie kodu
+  "editor.formatOnSave": true,
+
+  // Organize imports przy zapisie
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll": "explicit"
+  },
+
+  // Rozmiar czcionki — czytelny
+  "editor.fontSize": 14,
+
+  // Font z ligaturami dla czytelności kodu
+  "editor.fontFamily": "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
+
+  // Włącz ligatury programistyczne (→, ===, !==, etc.)
+  "editor.fontLigatures": true,
+
+  // Wysokość linii — lepsza czytelność
+  "editor.lineHeight": 1.6,
+
+  // Pokaż linię prowadzącą (ruler) na 80 i 120 znakach
+  "editor.rulers": [80, 120],
+
+  // Włącz minimap do nawigacji
+  "editor.minimap.enabled": true,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.maxColumn": 80,
+
+  // Breadcrumbs — nawigacja po strukturze pliku
+  "breadcrumbs.enabled": true,
+
+  // Pokaż wcięcia jako kolorowe linie
+  "editor.guides.indentation": true,
+  "editor.guides.bracketPairs": true,
+
+  // Zaznaczaj pasujące nawiasy
+  "editor.matchBrackets": "always",
+
+  // Pokaż spacje i tabulatory (debugging wcięć)
+  "editor.renderWhitespace": "boundary",
+
+  // Zawijanie linii dla plików Markdown
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    }
+  },
+
+  // Podpowiedzi parametrów podczas pisania funkcji
+  "editor.parameterHints.enabled": true,
+  "editor.parameterHints.cycle": true,
+
+  // IntelliSense — szybkie sugestie
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+
+  // Sugestie ze snippetów na górze listy
+  "editor.snippetSuggestions": "top",
+
+  // Sticky scroll — nagłówki klas/funkcji zawsze widoczne
+  "editor.stickyScroll.enabled": true,
+
+  // ─── TERMINAL — KONFIGURACJA TERMINALA ──────────────────────
+
+  // Domyślny profil terminala — PowerShell 7
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+
+  // Font w terminalu
+  "terminal.integrated.fontFamily": "'Cascadia Code', Consolas, monospace",
+  "terminal.integrated.fontSize": 13,
+
+  // Włącz GPU rendering w terminalu dla płynności
+  "terminal.integrated.gpuAcceleration": "on",
+
+  // Zachowanie przy zamknięciu terminala
+  "terminal.integrated.confirmOnExit": "hasChildProcesses",
+
+  // Kopiuj po zaznaczeniu w terminalu
+  "terminal.integrated.copyOnSelection": true,
+
+  // ─── PLIKI — ZARZĄDZANIE PLIKAMI ───────────────────────────
+
+  // Kodowanie plików — UTF-8 wszędzie
+  "files.encoding": "utf8",
+
+  // Koniec linii — LF (Unix-style, kompatybilne z Git)
+  "files.eol": "\n",
+
+  // Wstawiaj pustą linię na końcu pliku
+  "files.insertFinalNewline": true,
+
+  // Usuń białe znaki na końcu linii przy zapisie
+  "files.trimTrailingWhitespace": true,
+
+  // Wyklucz foldery z tree (zbędne w nawigacji)
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true
+  },
+
+  // ─── GIT — KONFIGURACJA GIT ────────────────────────────────
+
+  // Pobieraj autofetch co 3 minuty
+  "git.autofetch": true,
+  "git.autofetchPeriod": 180,
+
+  // Włącz Copilot AI dla commit messages
+  "git.branchProtection": [],
+
+  // Potwierdź przed synchronizacją
+  "git.confirmSync": false,
+
+  // SmartCommit — commit wszystkich zmian jeśli nie ma staged
+  "git.enableSmartCommit": true,
+
+  // ─── POWERSHELL — KONFIGURACJA ─────────────────────────────
+
+  // Ścieżka do PowerShell 7
+  "powershell.powerShellDefaultVersion": "PowerShell (x64)",
+
+  // Włącz PowerShell Extension Suite
+  "powershell.scriptAnalysis.enable": true,
+
+  // Poziom problemów PSScriptAnalyzer
+  "powershell.scriptAnalysis.settingsPath": "",
+
+  // Włącz formatter
+  "powershell.codeFormatting.autoCorrectAliases": true,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
+  "powershell.codeFormatting.whitespaceAfterSeparator": true,
+  "powershell.codeFormatting.alignPropertyValuePairs": true,
+
+  // Pester — framework testów
+  "powershell.pester.useLegacyCodeLens": false,
+  "powershell.pester.outputVerbosity": "Diagnostic",
+
+  // ─── JAVASCRIPT / TYPESCRIPT ────────────────────────────────
+
+  // Włącz TS w plikach JS
+  "js/ts.implicitProjectConfig.checkJs": true,
+
+  // Auto import sugestii
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+
+  // Update imports przy przeniesieniu pliku
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // Inlay hints — pokaż typy inline
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.returnTypes.enabled": true,
+
+  // ─── SQL / BAZY DANYCH ──────────────────────────────────────
+
+  // Format SQL przy zapisie (wymaga rozszerzenia)
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.codesnap",
+    "editor.formatOnSave": true
+  },
+
+  // ─── HTML / CSS / SCSS ──────────────────────────────────────
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  // ─── PRETTIER — FORMATOWANIE KODU ───────────────────────────
+
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.tabWidth": 2,
+  "prettier.trailingComma": "es5",
+  "prettier.printWidth": 100,
+  "prettier.arrowParens": "avoid",
+
+  // ─── ESLINT ─────────────────────────────────────────────────
+
+  "eslint.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // ─── TAILWIND CSS ───────────────────────────────────────────
+
+  // Włącz IntelliSense dla Tailwind w klasach
+  "tailwindCSS.includeLanguages": {
+    "javascript": "javascript",
+    "typescript": "typescript",
+    "html": "html"
+  },
+
+  // Sortowanie klas Tailwind (wymaga prettier-plugin-tailwindcss)
+  "tailwindCSS.experimental.classRegex": [
+    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  // ─── ERROR LENS ─────────────────────────────────────────────
+
+  // Pokaż błędy inline przy kodzie
+  "errorLens.enabled": true,
+  "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
+
+  // ─── GITLENS ────────────────────────────────────────────────
+
+  // Pokaż blame inline przy kodzie
+  "gitlens.currentLine.enabled": true,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.codeLens.enabled": true,
+
+  // ─── EXPLORER ───────────────────────────────────────────────
+
+  // Kompaktowe foldery
+  "explorer.compactFolders": false,
+
+  // Potwierdź usunięcie pliku
+  "explorer.confirmDelete": true,
+
+  // Potwierdź drag&drop
+  "explorer.confirmDragAndDrop": true,
+
+  // ─── WORKBENCH — WYGLĄD ─────────────────────────────────────
+
+  // Motyw — ciemny nowoczesny
+  "workbench.colorTheme": "GitHub Dark Default",
+
+  // Motyw ikon
+  "workbench.iconTheme": "material-icon-theme",
+
+  // Otwieraj pliki w pojedynczym kliknięciu (wersja podgląd)
+  "workbench.editor.enablePreview": true,
+
+  // Wiele edytorów w zakładkach
+  "workbench.editor.showTabs": "multiple",
+
+  // Zachowaj edytor po otwarciu terminala
+  "workbench.editor.revealIfOpen": true,
+
+  // ─── SEARCH — WYSZUKIWANIE ──────────────────────────────────
+
+  // Wyklucz z wyszukiwania
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.git": true,
+    "**/coverage": true
+  },
+
+  // ─── LIVESERVER ─────────────────────────────────────────────
+
+  // Port dla Live Server
+  "liveServer.settings.port": 5500,
+
+  // Otwieraj w domyślnej przeglądarce
+  "liveServer.settings.CustomBrowser": "chrome",
+
+  // ─── THUNDER CLIENT ─────────────────────────────────────────
+
+  // Pokaż logi odpowiedzi w panelu
+  "thunder-client.saveToWorkspace": true,
+
+  // ─── INNE USTAWIENIA ────────────────────────────────────────
+
+  // Aktualizuj automatycznie rozszerzenia
+  "extensions.autoUpdate": true,
+
+  // Telemetria — poziom minimal
+  "telemetry.telemetryLevel": "error",
+
+  // Wyłącz crash reporter
+  "update.showReleaseNotes": false
+}
