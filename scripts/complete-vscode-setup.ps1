@@ -61,6 +61,8 @@ function Invoke-WorkspaceScript {
     if ($PSCmdlet.ShouldProcess($displayName, 'Uruchomienie kroku wdrożenia')) {
         $finalArguments = @()
 
+        # $WhatIfPreference to automatyczna zmienna PowerShell ustawiana przy użyciu przełącznika -WhatIf
+        # Jeśli użytkownik wybrał -WhatIf, przekazujemy go dalej tylko do skryptów, które naprawdę go obsługują
         if ($WhatIfPreference -and $SupportsWhatIf) {
             $finalArguments += '-WhatIf'
         }

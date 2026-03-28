@@ -103,7 +103,11 @@ function Import-EnvFileValues {
         $name = $parts[0].Trim()
         $value = $parts[1].Trim()
 
-        if ($value -match '^(\".*\"|''.*'')$') {
+        # Usuwamy otaczające cudzysłowy lub apostrofy, aby .env działał tak samo jak w popularnych narzędziach
+        $startsAndEndsWithDoubleQuote = $value.Length -ge 2 -and $value.StartsWith('"') -and $value.EndsWith('"')
+        $startsAndEndsWithSingleQuote = $value.Length -ge 2 -and $value.StartsWith("'") -and $value.EndsWith("'")
+
+        if ($startsAndEndsWithDoubleQuote -or $startsAndEndsWithSingleQuote) {
             $value = $value.Substring(1, $value.Length - 2)
         }
 
@@ -128,12 +132,15 @@ function Test-SecretFormat {
 
     switch ($Name) {
         'GITHUB_TOKEN' {
-            return $Value -match '^(gh[pousr]_|github_pat_)'
+            # Akceptujemy najczęstsze prefiksy tokenów GitHub używanych w praktyce przez MCP i GH CLI
+            return ($Value -match '^(gh[pous]_|github_pat_)') -and $Value.Length -ge 20
         }
         'BRAVE_API_KEY' {
+            # Dla Brave i Magic UI stosujemy lekką kontrolę długości, aby ostrzec o ewidentnie pustych lub uciętych wartościach
             return $Value.Length -ge 10
         }
         'MAGIC_UI_API_KEY' {
+            # Dla Brave i Magic UI stosujemy lekką kontrolę długości, aby ostrzec o ewidentnie pustych lub uciętych wartościach
             return $Value.Length -ge 10
         }
         default {

@@ -41,10 +41,15 @@ function Write-Log {
 function Resolve-NpmPackageSpecifier {
     param([string]$Package)
 
-    if ($Package -match '@[^/]+$' -or $Package -match '@\d') {
+    # Szukamy ostatniego znaku @ po ostatnim ukośniku — tylko wtedy traktujemy końcówkę jako tag lub wersję
+    $lastSlashIndex = $Package.LastIndexOf('/')
+    $lastAtIndex = $Package.LastIndexOf('@')
+
+    if ($lastAtIndex -gt 0 -and $lastAtIndex -gt $lastSlashIndex) {
         return $Package
     }
 
+    # W przeciwnym razie dopinamy @latest, aby instalacja była jawna i przewidywalna
     return "$Package@latest"
 }
 
@@ -258,7 +263,10 @@ $sqliteDatabasePath = Join-Path $PSScriptRoot "..\data\local.db"
 
 try {
     if (Test-Path $mcpConfigSource) {
-        Get-Content -Path $mcpConfigSource -Raw | ConvertFrom-Json | Out-Null
+        $mcpConfig = Get-Content -Path $mcpConfigSource -Raw | ConvertFrom-Json
+        if (-not $mcpConfig.servers) {
+            throw 'Plik mcp-config.json nie zawiera sekcji servers.'
+        }
 
         $sqliteDirectory = Split-Path -Path $sqliteDatabasePath -Parent
         if (-not (Test-Path $sqliteDirectory)) {
@@ -272,34 +280,34 @@ try {
 
         if (-not $vscodeMcpPath) {
             Write-Log 'Brak zmiennej APPDATA — nie mogę skopiować konfiguracji MCP do VS Code.' -Level WARNING
-            return
         }
+        else {
+            # Upewniamy się, że katalog docelowy istnieje (pierwsza konfiguracja VS Code)
+            $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
+            if (-not (Test-Path $vscodeMcpDir)) {
+                New-Item -ItemType Directory -Path $vscodeMcpDir -Force | Out-Null
+            }
 
-        # Upewniamy się, że katalog docelowy istnieje (pierwsza konfiguracja VS Code)
-        $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
-        if (-not (Test-Path $vscodeMcpDir)) {
-            New-Item -ItemType Directory -Path $vscodeMcpDir -Force | Out-Null
+            if (Test-Path $vscodeMcpPath) {
+                # Sprawdzamy, czy już istnieje konfiguracja - nie nadpisujemy bez pytania
+                Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
+
+                # Tworzymy backup istniejącej konfiguracji z timestampem
+                $backup = "$vscodeMcpPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+                Copy-Item $vscodeMcpPath $backup
+                Write-Log "Backup zapisano: $backup" -Level SUCCESS
+            }
+
+            # Upewniamy się że folder docelowy istnieje
+            $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
+            if (-not (Test-Path $vscodeMcpDir)) {
+                New-Item -Path $vscodeMcpDir -ItemType Directory -Force | Out-Null
+            }
+
+            # Kopiujemy nową konfigurację
+            Copy-Item $mcpConfigSource $vscodeMcpPath -Force
+            Write-Log "Konfiguracja MCP skopiowana do: $vscodeMcpPath" -Level SUCCESS
         }
-
-        if (Test-Path $vscodeMcpPath) {
-            # Sprawdzamy, czy już istnieje konfiguracja - nie nadpisujemy bez pytania
-            Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
-
-            # Tworzymy backup istniejącej konfiguracji z timestampem
-            $backup = "$vscodeMcpPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
-            Copy-Item $vscodeMcpPath $backup
-            Write-Log "Backup zapisano: $backup" -Level SUCCESS
-        }
-
-        # Upewniamy się że folder docelowy istnieje
-        $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
-        if (-not (Test-Path $vscodeMcpDir)) {
-            New-Item -Path $vscodeMcpDir -ItemType Directory -Force | Out-Null
-        }
-
-        # Kopiujemy nową konfigurację
-        Copy-Item $mcpConfigSource $vscodeMcpPath -Force
-        Write-Log "Konfiguracja MCP skopiowana do: $vscodeMcpPath" -Level SUCCESS
     }
     else {
         Write-Log "Nie znaleziono pliku źródłowego: $mcpConfigSource" -Level WARNING
