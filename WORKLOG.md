@@ -30,6 +30,9 @@
 | Script: setup-environment.ps1 | ✅ Zakończone | 100% |
 | Script: install-extensions.ps1 | ✅ Zakończone | 100% |
 | Script: install-mcp-servers.ps1 | ✅ Zakończone | 100% |
+| Script: install-copilot-cli.ps1 | ✅ Zakończone | 100% |
+| Script: complete-vscode-setup.ps1 | ✅ Zakończone | 100% |
+| Plik: .env.example | ✅ Zakończone | 100% |
 | Template: project-plan | ✅ Zakończone | 100% |
 | Template: worklog | ✅ Zakończone | 100% |
 | Template: project-docs | ✅ Zakończone | 100% |
@@ -41,6 +44,58 @@
 ---
 
 ## 📅 Sesje pracy
+
+---
+
+### 2026-03-28 — Ostateczna weryfikacja gotowości pod VS Code + GPT-5.3-Codex / GPT-5.4
+
+**Model:** GitHub Copilot Task Agent
+**Kontekst:** Końcowa kontrola kompletności projektu przed użyciem jako gotowy workspace VS Code.
+
+#### ✅ Wykonano:
+
+- Dodano `.env.example`
+  - gotowy szablon dla `GITHUB_TOKEN`, `BRAVE_API_KEY` i `MAGIC_UI_API_KEY`
+  - uproszczone pierwsze wdrożenie projektu
+
+- Dodano `scripts/complete-vscode-setup.ps1`
+  - jeden skrypt uruchamiający pełne wdrożenie workspace
+  - obejmuje setup narzędzi, rozszerzeń, Copilot CLI, MCP i końcową weryfikację
+
+- Rozszerzono `scripts/set-environment-variables.ps1`
+  - obsługa importu wartości z pliku `.env`
+  - delikatna walidacja formatu sekretów
+  - zachowanie kompatybilności z trybem interaktywnym
+
+- Wzmocniono `scripts/install-mcp-servers.ps1`
+  - weryfikacja dostępności `npm`
+  - jawne instalowanie najnowszych pakietów MCP
+  - walidacja pliku `mcp/mcp-config.json` przed kopiowaniem
+  - tworzenie lokalnego pliku `data/local.db` dla MCP SQLite
+
+- Wzmocniono `scripts/verify-vscode-readiness.ps1`
+  - kontrola obecności `.env.example` i nowego skryptu pełnego wdrożenia
+  - weryfikacja taska pełnej instalacji
+  - weryfikacja kluczowych serwerów MCP dla GPT-5.3-Codex i GPT-5.4
+
+- Zaktualizowano `.vscode/tasks.json`
+  - task `SETUP: Pełna instalacja` uruchamia pełny skrypt wdrożeniowy
+  - dodano wariant bez interaktywnego ustawiania zmiennych środowiskowych
+
+- Zaktualizowano dokumentację
+  - `README.md`
+  - `docs/SETUP.md`
+  - `docs/VS_CODE_STEP_BY_STEP.md`
+  - `mcp/mcp-config.json`
+  - doprecyzowano routing pracy: GPT-5.3-Codex vs GPT-5.4
+
+#### ✅ Weryfikacja:
+
+- Sprawdzono składnię wszystkich skryptów PowerShell parserem PowerShell
+- Sprawdzono poprawność JSON/JSONC dla plików VS Code i MCP
+- Uruchomiono `scripts/verify-vscode-readiness.ps1`
+  - wynik: `PASS: 31`, `WARN: 6`, `FAIL: 0`
+  - ostrzeżenia dotyczą tylko środowiska lokalnego lub opcjonalnych integracji
 
 ---
 

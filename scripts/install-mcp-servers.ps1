@@ -37,6 +37,17 @@ function Write-Log {
     Write-Host "[$timestamp][$Level] $Message" -ForegroundColor $color
 }
 
+# Zwraca pakiet npm z jawnie ustawioną wersją latest, jeśli nie podano wersji
+function Resolve-NpmPackageSpecifier {
+    param([string]$Package)
+
+    if ($Package -match '@[^/]+$' -or $Package -match '@\d') {
+        return $Package
+    }
+
+    return "$Package@latest"
+}
+
 # Definicja serwerów MCP do zainstalowania
 # Każdy serwer ma: nazwę, pakiet npm i opis co robi
 $mcpServers = @(
@@ -135,6 +146,16 @@ catch {
     }
 }
 
+# Sprawdzamy czy npm jest dostępne po weryfikacji Node.js
+try {
+    $npmVersion = (npm --version 2>&1).ToString()
+    Write-Log "npm $npmVersion — OK" -Level SUCCESS
+}
+catch {
+    Write-Log 'npm nie jest dostępne mimo obecności Node.js. Zainstaluj ponownie Node.js LTS.' -Level ERROR
+    exit 1
+}
+
 # Filtrujemy serwery jeśli podano -Only parametr
 $serversToInstall = if ($Only) {
     # Instalujemy tylko wymienione serwery
@@ -143,6 +164,11 @@ $serversToInstall = if ($Only) {
 else {
     # Instalujemy wszystkie serwery
     $mcpServers
+}
+
+if (-not $serversToInstall) {
+    Write-Log 'Parametr -Only nie wskazał żadnego znanego serwera MCP.' -Level ERROR
+    exit 1
 }
 
 Write-Log "Instalacja $($serversToInstall.Count) serwerów MCP..."
@@ -154,11 +180,12 @@ $failed     = 0
 
 foreach ($server in $serversToInstall) {
     Write-Log "Instaluję MCP: $($server.Name) — $($server.Description)"
+    $packageSpecifier = Resolve-NpmPackageSpecifier -Package $server.Package
 
     try {
-        if ($PSCmdlet.ShouldProcess($server.Package, "npm install -g")) {
+        if ($PSCmdlet.ShouldProcess($packageSpecifier, "npm install -g")) {
             # Instalujemy pakiet globalnie przez npm
-            $output = npm install -g $server.Package 2>&1
+            $output = npm install -g $packageSpecifier 2>&1
 
             if ($LASTEXITCODE -eq 0) {
                 Write-Log "Zainstalowano: $($server.Name)" -Level SUCCESS
@@ -225,11 +252,29 @@ if (-not $SkipEnvSetup) {
 Write-Log "Kopiowanie konfiguracji MCP do VS Code..." -Level INFO
 
 # Ścieżka do globalnego pliku konfiguracyjnego MCP VS Code
-$vscodeMcpPath = "$env:APPDATA\Code\User\mcp.json"
+$vscodeMcpPath = if ($env:APPDATA) { "$env:APPDATA\Code\User\mcp.json" } else { $null }
 $mcpConfigSource = Join-Path $PSScriptRoot "..\mcp\mcp-config.json"
+$sqliteDatabasePath = Join-Path $PSScriptRoot "..\data\local.db"
 
 try {
     if (Test-Path $mcpConfigSource) {
+        Get-Content -Path $mcpConfigSource -Raw | ConvertFrom-Json | Out-Null
+
+        $sqliteDirectory = Split-Path -Path $sqliteDatabasePath -Parent
+        if (-not (Test-Path $sqliteDirectory)) {
+            New-Item -ItemType Directory -Path $sqliteDirectory -Force | Out-Null
+        }
+
+        if (-not (Test-Path $sqliteDatabasePath)) {
+            New-Item -ItemType File -Path $sqliteDatabasePath -Force | Out-Null
+            Write-Log "Utworzono lokalny plik SQLite: $sqliteDatabasePath" -Level SUCCESS
+        }
+
+        if (-not $vscodeMcpPath) {
+            Write-Log 'Brak zmiennej APPDATA — nie mogę skopiować konfiguracji MCP do VS Code.' -Level WARNING
+            return
+        }
+
         # Upewniamy się, że katalog docelowy istnieje (pierwsza konfiguracja VS Code)
         $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
         if (-not (Test-Path $vscodeMcpDir)) {

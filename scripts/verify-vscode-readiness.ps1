@@ -53,6 +53,7 @@ Write-Host ''
 
 $requiredFiles = @(
     '.github/copilot-instructions.md',
+    '.env.example',
     '.vscode/settings.json',
     '.vscode/extensions.json',
     '.vscode/tasks.json',
@@ -65,6 +66,7 @@ $requiredFiles = @(
     'scripts/install-extensions.ps1',
     'scripts/install-mcp-servers.ps1',
     'scripts/install-copilot-cli.ps1',
+    'scripts/complete-vscode-setup.ps1',
     'scripts/set-environment-variables.ps1',
     'scripts/verify-vscode-readiness.ps1',
     'data/.gitkeep'
@@ -110,6 +112,13 @@ if (Test-Path $settingsPath) {
     else {
         Add-Result -Results $results -Status 'FAIL' -Message 'Brak ustawienia GPT-5.3-Codex w settings.json'
     }
+
+    if ($settingsContent -match 'gpt-5\.4') {
+        Add-Result -Results $results -Status 'PASS' -Message 'settings.json zawiera instrukcje pracy z GPT-5.4'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brak instrukcji GPT-5.4 w settings.json'
+    }
 }
 else {
     Add-Result -Results $results -Status 'FAIL' -Message 'Plik .vscode/settings.json nie istnieje — nie można zweryfikować ustawienia GPT-5.3-Codex'
@@ -127,6 +136,58 @@ if (Test-Path $setupDocPath) {
 }
 else {
     Add-Result -Results $results -Status 'FAIL' -Message 'Brak pliku dokumentacji docs/SETUP.md — nie można zweryfikować opisu GPT-5.4'
+}
+
+$taskConfigPath = Join-Path $workspaceRoot '.vscode/tasks.json'
+if (Test-Path $taskConfigPath) {
+    $taskConfigContent = Get-Content $taskConfigPath -Raw
+
+    if ($taskConfigContent -match 'SETUP: Pełna instalacja') {
+        Add-Result -Results $results -Status 'PASS' -Message 'Task pełnej instalacji istnieje w VS Code'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brakuje taska pełnej instalacji w VS Code'
+    }
+
+    if ($taskConfigContent -match 'complete-vscode-setup\.ps1') {
+        Add-Result -Results $results -Status 'PASS' -Message 'Task pełnej instalacji uruchamia kompletny skrypt wdrożeniowy'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Task pełnej instalacji nie używa kompletnego skryptu wdrożeniowego'
+    }
+}
+else {
+    Add-Result -Results $results -Status 'FAIL' -Message 'Brak pliku .vscode/tasks.json — nie można zweryfikować tasków setupu'
+}
+
+$mcpConfigPath = Join-Path $workspaceRoot 'mcp/mcp-config.json'
+if (Test-Path $mcpConfigPath) {
+    try {
+        $mcpConfig = Get-Content $mcpConfigPath -Raw | ConvertFrom-Json
+        $serverNames = $mcpConfig.servers.PSObject.Properties.Name
+        $requiredMcpServers = @('filesystem', 'memory', 'sequential-thinking', 'context7', 'github', 'playwright')
+
+        if ($serverNames.Count -ge 10) {
+            Add-Result -Results $results -Status 'PASS' -Message "Konfiguracja MCP zawiera $($serverNames.Count) serwerów"
+        }
+        else {
+            Add-Result -Results $results -Status 'FAIL' -Message "Konfiguracja MCP zawiera zbyt mało serwerów: $($serverNames.Count)"
+        }
+
+        $missingMcpServers = $requiredMcpServers | Where-Object { $_ -notin $serverNames }
+        if ($missingMcpServers.Count -eq 0) {
+            Add-Result -Results $results -Status 'PASS' -Message 'Kluczowe serwery MCP dla GPT-5.3-Codex i GPT-5.4 są skonfigurowane'
+        }
+        else {
+            Add-Result -Results $results -Status 'FAIL' -Message "Brakuje kluczowych serwerów MCP: $($missingMcpServers -join ', ')"
+        }
+    }
+    catch {
+        Add-Result -Results $results -Status 'FAIL' -Message "Plik mcp-config.json jest niepoprawny: $($_.Exception.Message)"
+    }
+}
+else {
+    Add-Result -Results $results -Status 'FAIL' -Message 'Brak pliku mcp/mcp-config.json — nie można zweryfikować MCP'
 }
 
 $envVars = @('GITHUB_TOKEN', 'BRAVE_API_KEY', 'MAGIC_UI_API_KEY')

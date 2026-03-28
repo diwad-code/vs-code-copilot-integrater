@@ -66,6 +66,12 @@
     },
     {
       "text": "Domyślnie pracuj na GPT-5.3-Codex dla implementacji i refaktoryzacji. Przy złożonym planowaniu, analizie ryzyka i researchu przełączaj na GPT-5.4."
+    },
+    {
+      "text": "Traktuj gh copilot jako szybkie wsparcie terminalowe. Dla planu, review i decyzji architektonicznych preferuj Copilot Chat z GPT-5.4."
+    },
+    {
+      "text": "Po implementacji wykonaj końcową kontrolę kompletności na GPT-5.4 i upewnij się, że dokumentacja, taski i skrypty setupu pozostają spójne."
     }
   ],
 

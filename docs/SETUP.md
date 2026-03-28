@@ -35,16 +35,14 @@ z GitHub Copilot Pro+ zoptymalizowane pod specyfikę tego projektu.
 # 2. Przejdź do folderu projektu
 cd C:\Projekty\vs-code-copilot-integrater
 
-# 3. Uruchom pełny setup (instaluje wszystko automatycznie)
-Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\setup-environment.ps1   # Narzędzia deweloperskie
-.\scripts\install-extensions.ps1  # Rozszerzenia VS Code
-.\scripts\install-copilot-cli.ps1 # GitHub CLI + gh-copilot
-.\scripts\install-mcp-servers.ps1 # Serwery MCP
-.\scripts\set-environment-variables.ps1 # Zmienne środowiskowe
-.\scripts\verify-vscode-readiness.ps1 # Końcowa kontrola
+# 3. Skopiuj szablon sekretów i uzupełnij go, jeśli chcesz używać MCP z API keys
+Copy-Item .env.example .env
 
-# 4. Uruchom ponownie VS Code
+# 4. Uruchom pełny setup (instaluje wszystko automatycznie)
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\complete-vscode-setup.ps1
+
+# 5. Uruchom ponownie VS Code
 ```
 
 ---
@@ -126,8 +124,12 @@ Ustaw wymagane zmienne środowiskowe (niezbędne dla niektórych MCP serwerów):
 **Najwygodniej:**
 
 ```powershell
+Copy-Item .env.example .env
 .\scripts\set-environment-variables.ps1
 ```
+
+Jeśli plik `.env` istnieje, skrypt automatycznie odczyta z niego wartości
+i zapisze je do zmiennych środowiskowych użytkownika.
 
 ```powershell
 # GitHub Personal Access Token (zakres: repo, read:user)
@@ -168,6 +170,10 @@ To repo jest przygotowane do pracy z modelami:
 - **GPT-5.3-Codex** — implementacja kodu, refaktoryzacja, zadania terminalowe
 - **GPT-5.4** — złożone rozumowanie, planowanie, research i decyzje architektoniczne
 
+> Ważne: `gh copilot` nie daje tak precyzyjnego routingu modeli jak Copilot Chat w VS Code.
+> Dlatego w praktyce używaj `gh copilot` do szybkich operacji CLI, a przełączanie między
+> `GPT-5.3-Codex` i `GPT-5.4` wykonuj głównie w Copilot Chat.
+
 ### Instalacja Copilot CLI
 
 ```powershell
@@ -199,6 +205,7 @@ gh copilot suggest -t shell "Zaproponuj komendę do ..."
 
 W projekcie dostępny jest task:
 - `SETUP: Zainstaluj Copilot CLI`
+- `SETUP: Pełna instalacja`
 
 Uruchom: `Terminal > Run Task` i wybierz ten task, aby szybko przygotować CLI.
 

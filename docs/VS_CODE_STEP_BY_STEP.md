@@ -88,7 +88,8 @@ Uruchom:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\setup-environment.ps1
+Copy-Item .env.example .env
+.\scripts\complete-vscode-setup.ps1
 ```
 
 Ten skrypt przygotuje lub sprawdzi:
@@ -100,6 +101,12 @@ Ten skrypt przygotuje lub sprawdzi:
 - PowerShell 7,
 - Python,
 - GitHub CLI (`gh`).
+
+Jeśli nie chcesz jeszcze ustawiać sekretów, możesz użyć:
+
+```powershell
+.\scripts\complete-vscode-setup.ps1 -SkipEnvironmentVariables
+```
 
 ### Krok 2 — rozszerzenia VS Code
 
@@ -164,6 +171,9 @@ Skrypt zapyta Cię kolejno o:
 - `MAGIC_UI_API_KEY`
 
 Jeśli czegoś jeszcze nie masz, po prostu naciśnij **Enter**, aby pominąć.
+
+Jeżeli wcześniej skopiowałeś `.env.example` do `.env` i wpisałeś tam wartości,
+skrypt automatycznie je odczyta i nie będzie trzeba wpisywać wszystkiego od zera.
 
 ### Krok 6 — końcowa weryfikacja
 
@@ -231,6 +241,12 @@ W tym projekcie przyjęto prostą zasadę:
 1. **Najpierw GPT-5.4** → plan.
 2. **Potem GPT-5.3-Codex** → wykonanie.
 3. **Na końcu GPT-5.4** → kontrola jakości i decyzja czy rozwiązanie jest kompletne.
+
+### Bardzo praktyczna zasada dla tego repo
+
+- **Copilot Chat + GPT-5.4** → analiza, research, przegląd architektury
+- **Copilot Chat + GPT-5.3-Codex** → implementacja zmian w plikach
+- **`gh copilot`** → szybkie komendy shell i krótkie podpowiedzi terminalowe
 
 ---
 

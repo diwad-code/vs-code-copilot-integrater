@@ -1,6 +1,9 @@
 # Lokalne artefakty VS Code / MCP
 data/local.db
 *.backup_*
+.env
+.env.local
+.env.*.local
 
 # Node / Python / build
 node_modules/
