@@ -112,6 +112,21 @@ W VS Code agenci są dostępni przez `@` w Copilot Chat:
 "Napisz narzędzie konsolowe .NET do [opis]"
 ```
 
+### 6. Ultimate Engineering Expert (`skills/ultimate-engineering/skill.md`)
+**Kiedy aktywowany:** Przy zadaniach przekrojowych wymagających wielu domen naraz.
+
+**Co umie:**
+- Orkiestracja pracy multi-domenowej: architektura + implementacja + jakość + security
+- 150+ kompetencji obejmujących programowanie, reasoning i research
+- Dobór etapów MVP → hardening → skalowanie
+- Decision-making oparte o ryzyko, koszt utrzymania i cele biznesowe
+
+**Jak użyć:**
+```
+"Rozwiąż to zadanie kompleksowo używając podejścia end-to-end"
+"Zaproponuj architekturę i plan wdrożenia z walidacją jakości i bezpieczeństwa"
+```
+
 ---
 
 ## 🤖 Dostępne agenty (agents/)
@@ -174,6 +189,33 @@ Bada i porównuje technologie, proponuje nowoczesne rozwiązania.
 "Jakie są najlepsze biblioteki do [zadania]?"
 "Zrób research na temat [technologia]"
 ```
+
+### 5. Orchestrator (`agents/orchestrator-agent.md`)
+
+Agent koordynujący złożone zadania end-to-end:
+research → decyzja → implementacja → weryfikacja → dokumentacja.
+
+**Jak wywołać:**
+```
+"Orchestruj realizację: [opis zadania]"
+"Przeprowadź pełen workflow od planu do walidacji"
+```
+
+**Co zrobi:**
+- Podzieli problem na etapy i dobierze właściwych ekspertów
+- Uporządkuje zależności między zadaniami
+- Dopilnuje testów, review i bezpieczeństwa przed finalizacją
+
+---
+
+## 📚 Katalog 220+ pozycji
+
+Plik: `docs/ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md`
+
+Zawiera:
+- **120 skills** (kompetencje inżynierskie)
+- **70 tools** (kategorie narzędzi i ekosystemów)
+- **30 agents** (role wykonawcze i analityczne)
 
 ---
 

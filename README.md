@@ -15,8 +15,9 @@
 | ⚙️ **VS Code Settings** | 200+ ustawień dla maksymalnej produktywności |
 | 🔌 **35+ Rozszerzeń** | Lista rekomendowanych rozszerzeń z automatyczną instalacją |
 | 🌐 **9 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka |
-| 🎯 **5 Skills** | PowerShell, Web Dev, Database, GUI Design, Windows Apps |
-| 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
+| 🎯 **6 Skills** | + Ultimate Engineering (meta-skill) |
+| 🤖 **5 Agentów** | + Orchestrator (koordynacja zadań złożonych) |
+| 🧩 **Katalog 220+ pozycji** | 120 skills + 70 tools + 30 agents |
 | 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
 | 📚 **3 Przewodniki** | Setup, Skills/Agents, Workflows |
@@ -89,17 +90,20 @@ vs-code-copilot-integrater/
 │   ├── database/skill.md          ← 🗄️ Ekspert SQL/Oracle
 │   ├── gui-design/skill.md        ← 🎨 Ekspert GUI Design
 │   └── windows-apps/skill.md      ← 🪟 Ekspert Windows Apps
+│   └── ultimate-engineering/skill.md ← 🧠 Meta-skill 150+ kompetencji
 │
 ├── agents/
 │   ├── planning-agent.md          ← 📐 Agent planowania projektów
 │   ├── documentation-agent.md     ← 📚 Agent dokumentowania
 │   ├── code-review-agent.md       ← 🔍 Agent code review
 │   └── research-agent.md          ← 🔬 Agent badania technologii
+│   └── orchestrator-agent.md      ← 🎛️ Agent orkiestracji pracy
 │
 ├── docs/
 │   ├── SETUP.md                   ← 📖 Instrukcja instalacji
 │   ├── SKILLS_AND_AGENTS.md       ← 🛠️ Przewodnik po skillach i agentach
 │   └── DEVELOPMENT_WORKFLOWS.md   ← 🔄 Przepływy pracy
+│   └── ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md ← 📚 Katalog 220+
 │
 ├── scripts/
 │   ├── setup-environment.ps1      ← 🔧 Instalacja środowiska
@@ -235,6 +239,12 @@ skills/
 
 ### Dostosuj instrukcje Copilota:
 Edytuj `.github/copilot-instructions.md` — Copilot odczyta zmiany natychmiast
+
+### Użyj kompletnego katalogu:
+- `docs/ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md` zawiera:
+  - **120 skills** (programowanie, reasoning, research)
+  - **70 tools** (IDE, CI/CD, security, data, AI/MCP)
+  - **30 agent roles** (od planowania po AI eval i incident response)
 
 ---
 

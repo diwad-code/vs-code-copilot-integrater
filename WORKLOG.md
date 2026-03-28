@@ -189,3 +189,38 @@
 - `github` MCP wymaga Personal Access Token (łatwe do ustawienia)
 - Serwery MCP działają tylko gdy VS Code jest uruchomiony lokalnie
   (nie w środowiskach web/GitHub Codespaces bez konfiguracji)
+
+---
+
+### 2026-03-28 — Rozszerzenie: Ultimate skills/tools/agents catalog
+
+**Model:** Copilot Task Agent  
+**Kontekst:** Rozszerzenie projektu o pełny katalog „najlepszych skilli, tools i agents”.
+
+#### ✅ Wykonano:
+
+- Dodano nowy skill: `skills/ultimate-engineering/skill.md`
+  - Meta-skill obejmujący przekrojowe kompetencje inżynierskie
+  - Odsyła do pełnego katalogu 120+ kompetencji
+
+- Dodano nowego agenta: `agents/orchestrator-agent.md`
+  - Agent do orkiestracji zadań end-to-end
+  - Standaryzuje przebieg: clarify → research → design → build → verify → document
+
+- Dodano nowy dokument: `docs/ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md`
+  - **120 skills**
+  - **70 tools**
+  - **30 agents**
+  - Łącznie **220+ pozycji** obejmujących programowanie, reasoning i research
+
+- Zaktualizowano `README.md`
+  - Nowe liczby (skills/agents)
+  - Dodano odniesienia do nowego meta-skilla, agenta i katalogu
+
+- Zaktualizowano `docs/SKILLS_AND_AGENTS.md`
+  - Dodano opis nowego skilla i nowego agenta
+  - Dodano sekcję z odnośnikiem do katalogu 220+ pozycji
+
+#### 📝 Efekt:
+- Projekt zawiera teraz szeroki, gotowy do użycia katalog kompetencji i ról
+  do praktycznie każdego typu zadania programistycznego, analitycznego i researchowego.
