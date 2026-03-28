@@ -76,6 +76,7 @@ $extensions = @(
     # ── PRODUKTYWNOŚĆ ─────────────────────────────────────────
     'usernamehw.errorlens',             # Error Lens — błędy inline
     'christian-kohler.path-intellisense',   # Path Intellisense
+    'coenraads.bracket-pair-colorizer-2',   # Bracket Pair Colorizer — kolorowanie par nawiasów
     'aaron-bond.better-comments',       # Better Comments — kolorowe TODO/FIXME
     'gruntfuggly.todo-tree',            # Todo Tree — lista TODO w projekcie
     'oderwat.indent-rainbow',           # Indent Rainbow — kolorowe wcięcia

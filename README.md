@@ -157,6 +157,7 @@ MCP rozszerza możliwości Copilota o dostęp do narzędzi zewnętrznych:
 | `sqlite` | Lokalna baza do testów | Brak |
 | `context7` | Aktualna dokumentacja frameworków | Brak |
 | `playwright` | Testy E2E przeglądarkowe | Brak |
+| `magic-ui` | Generowanie komponentów UI | `MAGIC_UI_API_KEY` |
 
 ---
 
