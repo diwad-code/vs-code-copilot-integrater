@@ -5,7 +5,7 @@
 ---
 name: "Ultimate Engineering Expert"
 version: "1.0.0"
-description: "Kompleksowy meta-skill: 150+ umiejętności dla software engineering, AI reasoning i research"
+description: "Kompleksowy meta-skill: 120+ umiejętności dla software engineering, AI reasoning i research"
 tags:
   - architecture
   - backend
@@ -31,7 +31,7 @@ z repozytorium i dodaje szeroki katalog praktyk przydatnych w realnych projektac
 5. **Research technologiczny i analityczne rozumowanie**
 6. **Zarządzanie produktem, dokumentacją i współpracą**
 
-## ✅ Katalog kompetencji (150+)
+## ✅ Katalog kompetencji (120+)
 
 Pełny katalog: `docs/ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md`.
 

@@ -117,7 +117,7 @@ W VS Code agenci są dostępni przez `@` w Copilot Chat:
 
 **Co umie:**
 - Orkiestracja pracy multi-domenowej: architektura + implementacja + jakość + security
-- 150+ kompetencji obejmujących programowanie, reasoning i research
+- 120+ kompetencji obejmujących programowanie, reasoning i research
 - Dobór etapów MVP → hardening → skalowanie
 - Decision-making oparte o ryzyko, koszt utrzymania i cele biznesowe
 

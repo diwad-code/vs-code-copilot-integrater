@@ -15,7 +15,7 @@
 | ⚙️ **VS Code Settings** | 200+ ustawień dla maksymalnej produktywności |
 | 🔌 **35+ Rozszerzeń** | Lista rekomendowanych rozszerzeń z automatyczną instalacją |
 | 🌐 **9 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka |
-| 🎯 **6 Skills** | + Ultimate Engineering (meta-skill) |
+| 🎯 **6 Umiejętności** | + Ultimate Engineering (meta-skill) |
 | 🤖 **5 Agentów** | + Orchestrator (koordynacja zadań złożonych) |
 | 🧩 **Katalog 220+ pozycji** | 120 skills + 70 tools + 30 agents |
 | 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
@@ -90,7 +90,7 @@ vs-code-copilot-integrater/
 │   ├── database/skill.md          ← 🗄️ Ekspert SQL/Oracle
 │   ├── gui-design/skill.md        ← 🎨 Ekspert GUI Design
 │   └── windows-apps/skill.md      ← 🪟 Ekspert Windows Apps
-│   └── ultimate-engineering/skill.md ← 🧠 Meta-skill 150+ kompetencji
+│   └── ultimate-engineering/skill.md ← 🧠 Meta-skill 120+ umiejętności
 │
 ├── agents/
 │   ├── planning-agent.md          ← 📐 Agent planowania projektów

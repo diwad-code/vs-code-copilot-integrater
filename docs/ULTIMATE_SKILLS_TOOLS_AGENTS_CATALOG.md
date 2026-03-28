@@ -2,7 +2,7 @@
 # Plik: docs/ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md
 # Cel: Kompletny katalog kompetencji i narzędzi do programowania, reasoning i researchu
 
-> Poniżej znajduje się rozszerzony, praktyczny katalog zawierający ponad 100 pozycji.
+> Poniżej znajduje się rozszerzony, praktyczny katalog zawierający 220 pozycji.
 
 ---
 
