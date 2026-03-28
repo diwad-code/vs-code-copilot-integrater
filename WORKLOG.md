@@ -47,6 +47,47 @@
 
 ---
 
+### 2026-03-28 — Integracja prompt files i instruction files po analizie sugestii Gemini / Claude / GPT
+
+**Model:** GitHub Copilot Coding Agent
+**Kontekst:** Selektywne wdrożenie wartościowych sugestii z issue #6 bez rozszerzania ryzykownych uprawnień.
+
+#### ✅ Wykonano:
+
+- Dodano `.github/instructions/`
+  - `powershell.instructions.md` dla skryptów PowerShell
+  - `documentation.instructions.md` dla README, WORKLOG i plików `docs/`
+
+- Dodano `.github/prompts/`
+  - `kickoff.prompt.md` do startu zadania od analizy i planu
+  - `worklog.prompt.md` do przygotowania wpisów w `WORKLOG.md`
+
+- Zaktualizowano `.vscode/settings.json`
+  - włączono lokalizacje `chat.instructionsFilesLocations`
+  - włączono lokalizacje `chat.promptFilesLocations`
+
+- Rozszerzono `scripts/verify-vscode-readiness.ps1`
+  - kontrola obecności nowych prompt files i instruction files
+  - kontrola odpowiednich ustawień w `.vscode/settings.json`
+
+- Zaktualizowano dokumentację
+  - `README.md`
+  - `docs/SETUP.md`
+  - `docs/SKILLS_AND_AGENTS.md`
+
+#### ✅ Świadomie odrzucono:
+
+- globalne `auto-approve` / tryb YOLO — zbyt ryzykowne dla bezpieczeństwa
+- duplikowanie konfiguracji MCP w wielu miejscach — większe ryzyko rozjazdu niż realny zysk
+- eksperymentalne lub niejasne ustawienia modeli bez potwierdzenia kompatybilności VS Code
+
+#### ✅ Weryfikacja:
+
+- Uruchomiono `scripts/verify-vscode-readiness.ps1` przed zmianami jako baseline
+- Uruchomiono ponownie `scripts/verify-vscode-readiness.ps1` po zmianach — wynik: `PASS: 37`, `WARN: 6`, `FAIL: 0`
+
+---
+
 ### 2026-03-28 — Ostateczna weryfikacja gotowości pod VS Code + GPT-5.3-Codex / GPT-5.4
 
 **Model:** GitHub Copilot Task Agent

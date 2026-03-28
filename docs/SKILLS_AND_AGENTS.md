@@ -33,6 +33,25 @@ W VS Code agenci są dostępni przez `@` w Copilot Chat:
 
 ---
 
+## 🧭 Czym są prompt files i instruction files?
+
+**Prompt files** to gotowe polecenia dla Copilot Chat przechowywane w `.github/prompts/`.
+W tym repo:
+
+- `kickoff.prompt.md` — pomaga zacząć zadanie od analizy i planu
+- `worklog.prompt.md` — pomaga przygotować wpis do `WORKLOG.md`
+
+**Instruction files** to dodatkowe reguły aktywowane automatycznie dla określonych
+plików przez glob `applyTo`, przechowywane w `.github/instructions/`.
+W tym repo:
+
+- `powershell.instructions.md` — dla skryptów `.ps1`, `.psm1`, `.psd1`
+- `documentation.instructions.md` — dla `README.md`, `WORKLOG.md` i plików w `docs/`
+
+Obie warstwy są włączone w `.vscode/settings.json`.
+
+---
+
 ## 🔧 Dostępne skille (skills/)
 
 ### 1. PowerShell Expert (`skills/powershell/skill.md`)

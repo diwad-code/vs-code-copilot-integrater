@@ -53,6 +53,10 @@ Write-Host ''
 
 $requiredFiles = @(
     '.github/copilot-instructions.md',
+    '.github/instructions/powershell.instructions.md',
+    '.github/instructions/documentation.instructions.md',
+    '.github/prompts/kickoff.prompt.md',
+    '.github/prompts/worklog.prompt.md',
     '.env.example',
     '.vscode/settings.json',
     '.vscode/extensions.json',
@@ -118,6 +122,20 @@ if (Test-Path $settingsPath) {
     }
     else {
         Add-Result -Results $results -Status 'FAIL' -Message 'Brak instrukcji GPT-5.4 w settings.json'
+    }
+
+    if ($settingsContent -match '"chat\.instructionsFilesLocations"') {
+        Add-Result -Results $results -Status 'PASS' -Message 'settings.json włącza dodatkowe instruction files z .github/instructions'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brak konfiguracji chat.instructionsFilesLocations w settings.json'
+    }
+
+    if ($settingsContent -match '"chat\.promptFilesLocations"') {
+        Add-Result -Results $results -Status 'PASS' -Message 'settings.json włącza prompt files z .github/prompts'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brak konfiguracji chat.promptFilesLocations w settings.json'
     }
 }
 else {

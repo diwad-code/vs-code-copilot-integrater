@@ -250,6 +250,21 @@ npm list -g --depth=0 2>$null | Select-String "modelcontextprotocol|context7|pla
 1. Otwórz Copilot Chat (`` Ctrl+Alt+I ``)
 2. Wpisz: `@workspace Cześć! Jakie narzędzia MCP masz dostępne?`
 3. Copilot powinien wymienić dostępne serwery MCP
+4. Możesz też użyć prompt files:
+   - `/kickoff` — rozpoczęcie zadania od analizy i planu
+   - `/worklog` — przygotowanie wpisu do `WORKLOG.md`
+
+### Dodatkowe warstwy instrukcji Copilota
+
+Repo zawiera również:
+
+- `.github/instructions/powershell.instructions.md`
+- `.github/instructions/documentation.instructions.md`
+- `.github/prompts/kickoff.prompt.md`
+- `.github/prompts/worklog.prompt.md`
+
+Te pliki uzupełniają główne `copilot-instructions.md` o instrukcje per typ pliku
+i gotowe slash commands w Copilot Chat.
 
 ---
 

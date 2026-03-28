@@ -50,6 +50,16 @@
   // Włącz sugestie code review w Copilocie
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
 
+  // Dodatkowe instrukcje aktywowane warunkowo względem typu pliku
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true
+  },
+
+  // Gotowe prompt files dostępne jako slash commands w Copilot Chat
+  "chat.promptFilesLocations": {
+    ".github/prompts": true
+  },
+
   // Instrukcje dla generowania kodu — użyj pliku copilot-instructions.md
   "github.copilot.chat.codeGeneration.instructions": [
     {
