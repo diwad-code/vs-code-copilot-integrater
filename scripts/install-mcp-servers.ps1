@@ -203,6 +203,12 @@ if (-not $SkipEnvSetup) {
      [Environment]::SetEnvironmentVariable('GITHUB_TOKEN', 'twój_token', 'User')
      [Environment]::SetEnvironmentVariable('BRAVE_API_KEY', 'twój_klucz', 'User')
      [Environment]::SetEnvironmentVariable('MAGIC_UI_API_KEY', 'twój_klucz', 'User')
+  3. Aby bieżąca sesja PowerShell zobaczyła nowe wartości:
+     - uruchom nowy terminal (np. zamknij i otwórz ponownie VS Code),
+       LUB ustaw je także w tej sesji:
+       `$env:GITHUB_TOKEN = 'twój_token'`
+       `$env:BRAVE_API_KEY = 'twój_klucz'`
+       `$env:MAGIC_UI_API_KEY = 'twój_klucz'`
 
   Gdzie pobrać klucze:
   - GITHUB_TOKEN: https://github.com/settings/tokens (zakres: repo, read:user)
