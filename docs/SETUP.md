@@ -102,6 +102,7 @@ npm install -g @modelcontextprotocol/server-sequential-thinking
 npm install -g @modelcontextprotocol/server-brave-search
 npm install -g @modelcontextprotocol/server-github
 npm install -g @modelcontextprotocol/server-puppeteer
+npm install -g @modelcontextprotocol/server-sqlite
 npm install -g @upstash/context7-mcp
 npm install -g @playwright/mcp
 npm install -g @21st-dev/magic-mcp

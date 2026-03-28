@@ -230,8 +230,8 @@ try {
             New-Item -ItemType Directory -Path $vscodeMcpDir -Force | Out-Null
         }
 
-        # Sprawdzamy, czy już istnieje konfiguracja — nie nadpisujemy bez pytania
         if (Test-Path $vscodeMcpPath) {
+            # Sprawdzamy, czy już istnieje konfiguracja - nie nadpisujemy bez pytania
             Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
 
             # Tworzymy backup istniejącej konfiguracji z timestampem
