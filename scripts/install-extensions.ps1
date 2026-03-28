@@ -44,9 +44,11 @@ function Get-RecommendationList {
         throw "Nie znaleziono pliku z rekomendacjami rozszerzeń: $Path"
     }
 
-    # extensions.json jest plikiem JSONC z komentarzami całoliniowymi
+    # extensions.json jest plikiem JSONC; usuwamy komentarze blokowe i całoliniowe
     $rawContent = Get-Content -Path $Path -Raw
-    $jsonContent = $rawContent -replace '(?m)^\s*//.*(?:\r?\n)?', ''
+    $jsonContent = $rawContent `
+        -replace '(?s)/\*.*?\*/', '' `
+        -replace '(?m)^\s*//.*(?:\r?\n)?', ''
     $config = $jsonContent | ConvertFrom-Json
 
     if (-not $config.recommendations -or $config.recommendations.Count -eq 0) {

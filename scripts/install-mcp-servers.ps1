@@ -186,7 +186,8 @@ function Sync-VsCodeMcpConfiguration {
 }
 
 if ($SyncOnly -and $Only) {
-    Write-Log 'Parametr -Only jest ignorowany w trybie -SyncOnly, ponieważ synchronizacja MCP kopiuje pełną konfigurację.' -Level WARNING
+    Write-Log 'Parametry -SyncOnly oraz -Only nie mogą być użyte razem.' -Level ERROR
+    exit 1
 }
 
 $serversToInstall = Get-TargetMcpServers -Servers $mcpServers -Names $Only

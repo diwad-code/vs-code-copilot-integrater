@@ -91,9 +91,24 @@ foreach ($relativePath in $requiredFiles) {
 
 $scriptFiles = Get-ChildItem -Path (Join-Path $workspaceRoot 'scripts') -Filter '*.ps1' -File
 foreach ($scriptFile in $scriptFiles) {
+    $tokens = $null
+    $parseErrors = $null
+
     try {
-        $null = Get-Command $scriptFile.FullName -Syntax
-        Add-Result -Results $results -Status 'PASS' -Message "Skrypt PowerShell ładuje się poprawnie: scripts/$($scriptFile.Name)"
+        [System.Management.Automation.Language.Parser]::ParseFile(
+            $scriptFile.FullName,
+            [ref]$tokens,
+            [ref]$parseErrors
+        ) | Out-Null
+
+        if ($parseErrors.Count -gt 0) {
+            $errorMessage = ($parseErrors | Select-Object -First 1).Message
+            Add-Result -Results $results -Status 'FAIL' -Message "Skrypt PowerShell ma błąd składni: scripts/$($scriptFile.Name) — $errorMessage"
+            continue
+        }
+
+        $null = Get-Command $scriptFile.FullName -ErrorAction Stop
+        Add-Result -Results $results -Status 'PASS' -Message "Skrypt PowerShell przechodzi parser i ładuje się poprawnie: scripts/$($scriptFile.Name)"
     }
     catch {
         Add-Result -Results $results -Status 'FAIL' -Message "Skrypt PowerShell nie ładuje się poprawnie: scripts/$($scriptFile.Name) — $($_.Exception.Message)"
