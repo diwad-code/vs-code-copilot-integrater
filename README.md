@@ -17,6 +17,8 @@
 | 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI |
 | 🎯 **5 Skills** | PowerShell, Web Dev, Database, GUI Design, Windows Apps |
 | 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
+| 🧭 **Prompt Files** | Gotowe slash commands typu `/kickoff` i `/worklog` dla Copilot Chat |
+| 🧩 **Instruction Files** | Reguły `.instructions.md` aktywowane automatycznie dla PowerShell i dokumentacji |
 | 📜 **7 Skryptów PS** | Automatyczna instalacja, wdrożenie, zmienne i weryfikacja |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
 | 📚 **4 Przewodniki** | Setup, Skills/Agents, Workflows, wdrożenie krok po kroku |
@@ -95,6 +97,8 @@ vs-code-copilot-integrater/
 │
 ├── .github/
 │   ├── copilot-instructions.md    ← 🧠 System prompt Copilota (KLUCZOWY PLIK)
+│   ├── instructions/              ← 🧩 Reguły per typ pliku (.instructions.md)
+│   ├── prompts/                   ← 🧭 Gotowe prompt files / slash commands
 │   └── ISSUE_TEMPLATE/
 │
 ├── .vscode/
@@ -169,6 +173,21 @@ automatycznie odczytuje w VS Code. Definiuje on:
 | **Bazy danych** | SQL Server (T-SQL), Oracle (PL/SQL) |
 | **GUI Design** | Tailwind, shadcn/ui, Framer Motion, dark theme |
 | **Windows Apps** | WPF, WinForms, .NET 8, CommunityToolkit.Mvvm |
+
+---
+
+## 🧭 Prompt files i instruction files
+
+Repo wdraża także dwie lekkie sugestie z analizy Gemini/Claude/GPT, które realnie
+zwiększają użyteczność bez dokładania ryzykownych uprawnień:
+
+- `.github/prompts/kickoff.prompt.md` — gotowy start zadania i plan wdrożenia
+- `.github/prompts/worklog.prompt.md` — przygotowanie wpisu do `WORKLOG.md`
+- `.github/instructions/powershell.instructions.md` — dodatkowe reguły dla skryptów PowerShell
+- `.github/instructions/documentation.instructions.md` — reguły dla README, docs i worklogu
+
+Foldery te są włączone w `.vscode/settings.json`, więc VS Code może traktować je jako
+warstwę uzupełniającą wobec głównego pliku `.github/copilot-instructions.md`.
 
 ---
 
