@@ -111,14 +111,14 @@ vs-code-copilot-integrater/
 │   ├── web-development/skill.md   ← 🌐 Ekspert Web Dev
 │   ├── database/skill.md          ← 🗄️ Ekspert SQL/Oracle
 │   ├── gui-design/skill.md        ← 🎨 Ekspert GUI Design
-│   └── windows-apps/skill.md      ← 🪟 Ekspert Windows Apps
+│   ├── windows-apps/skill.md      ← 🪟 Ekspert Windows Apps
 │   └── ultimate-engineering/skill.md ← 🧠 Meta-skill 120+ umiejętności
 │
 ├── agents/
 │   ├── planning-agent.md          ← 📐 Agent planowania projektów
 │   ├── documentation-agent.md     ← 📚 Agent dokumentowania
 │   ├── code-review-agent.md       ← 🔍 Agent code review
-│   └── research-agent.md          ← 🔬 Agent badania technologii
+│   ├── research-agent.md          ← 🔬 Agent badania technologii
 │   └── orchestrator-agent.md      ← 🎛️ Agent orkiestracji pracy
 │
 ├── docs/
