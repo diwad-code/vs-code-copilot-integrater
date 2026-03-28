@@ -100,6 +100,8 @@ npm install -g @modelcontextprotocol/server-brave-search
 npm install -g @modelcontextprotocol/server-github
 npm install -g @modelcontextprotocol/server-puppeteer
 npm install -g @upstash/context7-mcp
+npm install -g @playwright/mcp
+npm install -g @21st-dev/magic-mcp
 ```
 
 **Konfiguracja VS Code dla MCP:**
@@ -134,10 +136,61 @@ Ustaw wymagane zmienne środowiskowe (niezbędne dla niektórych MCP serwerów):
     'User'
 )
 
+# MAGIC UI API Key (opcjonalne — dla MCP magic-ui)
+# Utwórz na: https://21st.dev
+[Environment]::SetEnvironmentVariable(
+    'MAGIC_UI_API_KEY',
+    'mui_twój_klucz_tutaj',
+    'User'
+)
+
 # Przeładuj zmienne w PowerShell (bez restartu)
 $env:GITHUB_TOKEN = [Environment]::GetEnvironmentVariable('GITHUB_TOKEN', 'User')
 $env:BRAVE_API_KEY = [Environment]::GetEnvironmentVariable('BRAVE_API_KEY', 'User')
+$env:MAGIC_UI_API_KEY = [Environment]::GetEnvironmentVariable('MAGIC_UI_API_KEY', 'User')
 ```
+
+---
+
+## 🤖 Copilot CLI (gh-copilot) — konfiguracja pod GPT-5.3-Codex i GPT-5.4
+
+To repo jest przygotowane do pracy z modelami:
+- **GPT-5.3-Codex** — implementacja kodu, refaktoryzacja, zadania terminalowe
+- **GPT-5.4** — złożone rozumowanie, planowanie, research i decyzje architektoniczne
+
+### Instalacja Copilot CLI
+
+```powershell
+# 1) Zainstaluj GitHub CLI
+winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements
+
+# 2) Dodaj rozszerzenie Copilot do GH CLI
+gh extension install github/gh-copilot
+
+# 3) Zaloguj się
+gh auth login
+
+# 4) Weryfikacja
+gh copilot --help
+```
+
+### Szybki workflow CLI
+
+```powershell
+# Kodowanie / refaktor (preferuj GPT-5.3-Codex)
+gh copilot suggest -t shell "Zaproponuj komendę do ..."
+
+# Analiza i decyzje (przełączaj na GPT-5.4 w Chat/IDE dla głębokiego reasoning)
+# W praktyce: użyj GPT-5.4 w Copilot Chat dla planów i researchu,
+# a CLI utrzymuj do szybkich operacji kodowo-terminalowych.
+```
+
+### VS Code Task
+
+W projekcie dostępny jest task:
+- `SETUP: Copilot CLI (gh-copilot)`
+
+Uruchom: `Terminal > Run Task` i wybierz ten task, aby szybko przygotować CLI.
 
 ---
 

@@ -238,6 +238,7 @@ Model Context Protocol (MCP) to otwarty standard który pozwala modelom AI
 | **sqlite** | `@mcp/server-sqlite` | Lokalna baza danych | Brak |
 | **context7** | `@upstash/context7-mcp` | Dokumentacja frameworków | Brak |
 | **playwright** | `@playwright/mcp` | Testy E2E | Brak |
+| **magic-ui** | `@21st-dev/magic-mcp` | Generowanie komponentów GUI | `MAGIC_UI_API_KEY` (opcjonalny) |
 
 ### Przykłady użycia MCP w Copilot Chat:
 
@@ -286,3 +287,13 @@ Użyj `Ctrl+Shift+I` (Copilot Edits) gdy chcesz zmienić wiele plików naraz.
 ```
 "Dodaj dark mode do wszystkich komponentów React w src/components/"
 ```
+
+### 6. Routing modeli pod ten projekt (GPT-5.3-Codex + GPT-5.4)
+
+- **GPT-5.3-Codex**: implementacja kodu, refaktoryzacja, zadania terminalowe/CLI
+- **GPT-5.4**: złożone planowanie, analiza architektury, research i decyzje
+
+Rekomendacja:
+1. Zacznij od planu na GPT-5.4
+2. Wdrożenie i poprawki rób na GPT-5.3-Codex
+3. Walidację końcową i ocenę ryzyk zrób ponownie na GPT-5.4

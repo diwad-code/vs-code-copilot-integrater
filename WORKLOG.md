@@ -1,11 +1,11 @@
 # WORKLOG — vs-code-copilot-integrater
 # Dziennik pracy nad konfiguracją GitHub Copilot Pro+ dla VS Code
 
-**Projekt:** Konfiguracja GitHub Copilot Pro+ dla VS Code  
-**Repozytorium:** https://github.com/diwad-code/vs-code-copilot-integrater  
-**Technologia:** VS Code, GitHub Copilot, MCP, PowerShell, JSON, Markdown  
-**Data startu:** 2026-03-28  
-**Ostatnia aktualizacja:** 2026-03-28  
+**Projekt:** Konfiguracja GitHub Copilot Pro+ dla VS Code
+**Repozytorium:** https://github.com/diwad-code/vs-code-copilot-integrater
+**Technologia:** VS Code, GitHub Copilot, MCP, PowerShell, JSON, Markdown
+**Data startu:** 2026-03-28
+**Ostatnia aktualizacja:** 2026-03-28
 
 ---
 
@@ -46,8 +46,8 @@
 
 ### 2026-03-28 — Sesja inicjalna: Pełna implementacja konfiguracji
 
-**Model:** Claude Sonnet (GitHub Copilot Pro+)  
-**Czas:** ~2h  
+**Model:** Claude Sonnet (GitHub Copilot Pro+)
+**Czas:** ~2h
 **Kontekst:** Pierwsze uruchomienie projektu, implementacja od zera zgodnie z wymaganiami
 
 #### ✅ Wykonano:
@@ -96,7 +96,7 @@
   - SETUP: Instalacja środowiska / Rozszerzeń / MCP / Pełna instalacja
 
 **Konfiguracja MCP:**
-- Stworzono `mcp/mcp-config.json` — 9 serwerów MCP:
+- Stworzono `mcp/mcp-config.json` — 10 serwerów MCP:
   - filesystem (dostęp do plików)
   - github (GitHub API — wymaga GITHUB_TOKEN)
   - memory (pamięć między sesjami)
@@ -137,7 +137,7 @@
 
 - Stworzono `scripts/install-mcp-servers.ps1`:
   - Weryfikacja Node.js v18+
-  - Instalacja 9 serwerów MCP przez npm
+  - Instalacja 10 serwerów MCP przez npm
   - Przewodnik ustawienia zmiennych środowiskowych
   - Kopiowanie konfiguracji do VS Code
 
@@ -194,7 +194,7 @@
 
 ### 2026-03-28 — Rozszerzenie: Ultimate skills/tools/agents catalog
 
-**Model:** Copilot Task Agent  
+**Model:** Copilot Task Agent
 **Kontekst:** Rozszerzenie projektu o pełny katalog „najlepszych skilli, tools i agents”.
 
 #### ✅ Wykonano:
@@ -224,3 +224,41 @@
 #### 📝 Efekt:
 - Projekt zawiera teraz szeroki, gotowy do użycia katalog kompetencji i ról
   do praktycznie każdego typu zadania programistycznego, analitycznego i researchowego.
+
+---
+
+### 2026-03-28 — Hardening: pełna gotowość VS Code + Copilot CLI (GPT-5.3-Codex / GPT-5.4)
+
+**Model:** Copilot Task Agent
+**Kontekst:** Doprowadzenie repo do stanu „niczego nie brakuje” pod VS Code i Copilot CLI.
+
+#### ✅ Wykonano:
+
+- Zaktualizowano `.vscode/settings.json`:
+  - Domyślny model czatu ustawiony na `gpt-5.3-codex`
+  - Dodano instrukcję model routing:
+    - implementacja/refaktoryzacja → GPT-5.3-Codex
+    - reasoning/research/architektura → GPT-5.4
+
+- Rozszerzono `scripts/setup-environment.ps1`:
+  - Dodano weryfikację obecności `gh` (GitHub CLI)
+  - Dodano instalację `GitHub.cli` przez winget (jeśli brak)
+  - Dodano weryfikację rozszerzenia `gh-copilot` (informacyjnie)
+
+- Rozszerzono `scripts/install-mcp-servers.ps1`:
+  - Dodano instalację MCP `magic-ui` (`@21st-dev/magic-mcp`)
+  - Dodano obsługę zmiennej `MAGIC_UI_API_KEY` i instrukcję konfiguracji
+
+- Rozszerzono `.vscode/tasks.json`:
+  - Dodano task `SETUP: Copilot CLI (gh-copilot)`
+  - Dodano ten task do pełnej instalacji `SETUP: Pełna instalacja`
+
+- Zaktualizowano dokumentację:
+  - `README.md` — 10 serwerów MCP, kroki Copilot CLI, routing modeli
+  - `docs/SETUP.md` — instalacja `gh-copilot`, konfiguracja `MAGIC_UI_API_KEY`,
+    instrukcje workflow dla GPT-5.3-Codex / GPT-5.4
+  - `docs/SKILLS_AND_AGENTS.md` — `magic-ui` i sekcja routing modeli
+
+#### 📝 Efekt:
+- Repo jest przygotowane do pracy w VS Code i Copilot CLI z naciskiem na duet
+  **GPT-5.3-Codex + GPT-5.4** oraz pełną konfigurację MCP (w tym `magic-ui`).

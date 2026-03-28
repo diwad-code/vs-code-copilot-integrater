@@ -95,6 +95,13 @@ $mcpServers = @(
         Package     = '@playwright/mcp'
         Description = 'Testy E2E i screenshoty dla Chrome/Firefox/Safari'
         Required    = $false
+    },
+    @{
+        Name        = 'magic-ui'
+        Package     = '@21st-dev/magic-mcp'
+        Description = 'Generowanie komponentów UI (wymaga MAGIC_UI_API_KEY)'
+        Required    = $false
+        EnvVar      = 'MAGIC_UI_API_KEY'
     }
 )
 
@@ -195,10 +202,12 @@ if (-not $SkipEnvSetup) {
   2. Lub użyj PowerShell (trwałe ustawienie):
      [Environment]::SetEnvironmentVariable('GITHUB_TOKEN', 'twój_token', 'User')
      [Environment]::SetEnvironmentVariable('BRAVE_API_KEY', 'twój_klucz', 'User')
+     [Environment]::SetEnvironmentVariable('MAGIC_UI_API_KEY', 'twój_klucz', 'User')
 
   Gdzie pobrać klucze:
   - GITHUB_TOKEN: https://github.com/settings/tokens (zakres: repo, read:user)
   - BRAVE_API_KEY: https://brave.com/search/api (darmowy plan: 2000 req/miesiąc)
+  - MAGIC_UI_API_KEY: https://21st.dev (opcjonalny, funkcje generowania UI)
 "@ -ForegroundColor Cyan
     }
     else {

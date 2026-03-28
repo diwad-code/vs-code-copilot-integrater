@@ -31,9 +31,9 @@
 
   // ─── COPILOT CHAT — KONFIGURACJA CZATU ──────────────────────
 
-  // Domyślny model — Claude Sonnet (najlepszy balans jakość/szybkość)
-  // Dostępne w Pro+: claude-sonnet-4-5, gpt-4o, gemini-2.0-flash, o3, o4-mini
-  "github.copilot.chat.defaultModel": "claude-sonnet-4-5",
+  // Domyślny model pod codzienną pracę CLI/kodową
+  // Preferencja projektu: GPT-5.3-Codex (kod), GPT-5.4 (złożone reasoning/research)
+  "github.copilot.chat.defaultModel": "gpt-5.3-codex",
 
   // Włącz automatyczny kontekst pliku w czacie
   "github.copilot.chat.useProjectTemplates": true,
@@ -63,6 +63,9 @@
     },
     {
       "text": "Po zakończeniu pracy aktualizuj WORKLOG.md z opisem co zostało zrobione i co pozostaje."
+    },
+    {
+      "text": "Domyślnie pracuj na GPT-5.3-Codex dla implementacji i refaktoryzacji. Przy złożonym planowaniu, analizie ryzyka i researchu przełączaj na GPT-5.4."
     }
   ],
 

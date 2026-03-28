@@ -212,6 +212,23 @@
         "clear": true
       }
     },
+    {
+      // Konfiguruje gotowość Copilot CLI (GitHub CLI + gh-copilot)
+      "label": "SETUP: Copilot CLI (gh-copilot)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-Command",
+        "if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements }; gh extension list 2>$null | Select-String gh-copilot | Out-Null; if ($LASTEXITCODE -ne 0) { gh extension install github/gh-copilot }; gh copilot --help"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
 
     {
       // Uruchamia pełny setup wszystkiego
@@ -219,7 +236,8 @@
       "dependsOn": [
         "SETUP: Zainstaluj środowisko",
         "SETUP: Zainstaluj rozszerzenia VS Code",
-        "SETUP: Zainstaluj serwery MCP"
+        "SETUP: Zainstaluj serwery MCP",
+        "SETUP: Copilot CLI (gh-copilot)"
       ],
       "dependsOrder": "sequence",
       "group": {

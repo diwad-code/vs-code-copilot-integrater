@@ -14,11 +14,11 @@
 | 🧠 **Copilot Instructions** | Globalny system prompt — Copilot wie jak się zachowywać |
 | ⚙️ **VS Code Settings** | 200+ ustawień dla maksymalnej produktywności |
 | 🔌 **35+ Rozszerzeń** | Lista rekomendowanych rozszerzeń z automatyczną instalacją |
-| 🌐 **9 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka |
+| 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI generation |
 | 🎯 **6 Umiejętności** | + Ultimate Engineering (meta-skill) |
 | 🤖 **5 Agentów** | + Orchestrator (koordynacja zadań złożonych) |
 | 🧩 **Katalog 220+ pozycji** | 120 skills + 70 tools + 30 agents |
-| 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
+| 📜 **3 Skrypty PS + 1 Task CLI** | Automatyczna instalacja środowiska + Copilot CLI readiness |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
 | 📚 **3 Przewodniki** | Setup, Skills/Agents, Workflows |
 
@@ -43,7 +43,7 @@ code .
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup-environment.ps1      # Git, Node.js, .NET 8, PS 7
 .\scripts\install-extensions.ps1     # 35+ rozszerzeń VS Code
-.\scripts\install-mcp-servers.ps1    # 9 serwerów MCP
+.\scripts\install-mcp-servers.ps1    # 10 serwerów MCP (w tym magic-ui)
 ```
 
 ### Krok 3: Skonfiguruj GitHub Copilot
@@ -52,6 +52,24 @@ Set-ExecutionPolicy -Scope Process Bypass
 2. W VS Code: `Ctrl+Shift+P` → "GitHub Copilot: Sign In"
 3. Otwórz Copilot Chat: `Ctrl+Alt+I`
 4. Powiedz: **"@workspace Powitaj mnie i powiedz jakie masz możliwości"**
+
+### Krok 3b: Ustaw priorytet modeli (Copilot Chat / CLI)
+
+- **Model domyślny do implementacji:** `GPT-5.3-Codex`
+- **Model do złożonego reasoning/research:** `GPT-5.4`
+- W `.vscode/settings.json` domyślny model jest ustawiony na `gpt-5.3-codex`.
+- Dla zadań analitycznych przełączaj model ręcznie na `gpt-5.4`.
+
+### Krok 3c: Przygotuj Copilot CLI (gh-copilot)
+
+```powershell
+# VS Code Task: Terminal > Run Task > SETUP: Copilot CLI (gh-copilot)
+# Lub ręcznie:
+winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements
+gh extension install github/gh-copilot
+gh auth login
+gh copilot --help
+```
 
 ### Krok 4: Ustaw zmienne środowiskowe (opcjonalne, dla MCP)
 
@@ -161,6 +179,7 @@ MCP rozszerza możliwości Copilota o dostęp do narzędzi zewnętrznych:
 | `sqlite` | Lokalna baza do testów | Brak |
 | `context7` | Aktualna dokumentacja frameworków | Brak |
 | `playwright` | Testy E2E przeglądarkowe | Brak |
+| `magic-ui` | Generowanie komponentów GUI | `MAGIC_UI_API_KEY` (opcjonalny) |
 
 ---
 
