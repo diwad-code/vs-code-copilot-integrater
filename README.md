@@ -14,7 +14,7 @@
 | 🧠 **Copilot Instructions** | Globalny system prompt — Copilot wie jak się zachowywać |
 | ⚙️ **VS Code Settings** | 200+ ustawień dla maksymalnej produktywności |
 | 🔌 **35+ Rozszerzeń** | Lista rekomendowanych rozszerzeń z automatyczną instalacją |
-| 🌐 **9 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka |
+| 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI |
 | 🎯 **5 Skills** | PowerShell, Web Dev, Database, GUI Design, Windows Apps |
 | 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
 | 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
@@ -42,7 +42,7 @@ code .
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup-environment.ps1      # Git, Node.js, .NET 8, PS 7
 .\scripts\install-extensions.ps1     # 35+ rozszerzeń VS Code
-.\scripts\install-mcp-servers.ps1    # 9 serwerów MCP
+.\scripts\install-mcp-servers.ps1    # 10 serwerów MCP
 ```
 
 ### Krok 3: Skonfiguruj GitHub Copilot
@@ -157,6 +157,7 @@ MCP rozszerza możliwości Copilota o dostęp do narzędzi zewnętrznych:
 | `sqlite` | Lokalna baza do testów | Brak |
 | `context7` | Aktualna dokumentacja frameworków | Brak |
 | `playwright` | Testy E2E przeglądarkowe | Brak |
+| `magic-ui` | Generowanie komponentów UI | `MAGIC_UI_API_KEY` |
 
 ---
 

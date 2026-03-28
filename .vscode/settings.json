@@ -139,6 +139,7 @@
 
   // Zaznaczaj pasujące nawiasy
   "editor.matchBrackets": "always",
+  "editor.bracketPairColorization.enabled": true,
 
   // Pokaż spacje i tabulatory (debugging wcięć)
   "editor.renderWhitespace": "boundary",
@@ -271,7 +272,7 @@
 
   // Format SQL przy zapisie (wymaga rozszerzenia)
   "[sql]": {
-    "editor.defaultFormatter": "adpyke.codesnap",
+    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode",
     "editor.formatOnSave": true
   },
 

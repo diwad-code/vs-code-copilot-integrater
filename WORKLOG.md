@@ -96,7 +96,7 @@
   - SETUP: Instalacja środowiska / Rozszerzeń / MCP / Pełna instalacja
 
 **Konfiguracja MCP:**
-- Stworzono `mcp/mcp-config.json` — 9 serwerów MCP:
+- Stworzono `mcp/mcp-config.json` — 10 serwerów MCP:
   - filesystem (dostęp do plików)
   - github (GitHub API — wymaga GITHUB_TOKEN)
   - memory (pamięć między sesjami)
@@ -137,7 +137,7 @@
 
 - Stworzono `scripts/install-mcp-servers.ps1`:
   - Weryfikacja Node.js v18+
-  - Instalacja 9 serwerów MCP przez npm
+  - Instalacja 10 serwerów MCP przez npm
   - Przewodnik ustawienia zmiennych środowiskowych
   - Kopiowanie konfiguracji do VS Code
 
