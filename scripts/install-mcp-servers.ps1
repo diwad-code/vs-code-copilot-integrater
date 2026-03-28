@@ -224,7 +224,13 @@ $mcpConfigSource = Join-Path $PSScriptRoot "..\mcp\mcp-config.json"
 
 try {
     if (Test-Path $mcpConfigSource) {
-        # Sprawdzamy czy już istnieje konfiguracja — nie nadpisujemy bez pytania
+        # Upewniamy się, że katalog docelowy istnieje (pierwsza konfiguracja VS Code)
+        $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
+        if (-not (Test-Path $vscodeMcpDir)) {
+            New-Item -ItemType Directory -Path $vscodeMcpDir -Force | Out-Null
+        }
+
+        # Sprawdzamy, czy już istnieje konfiguracja — nie nadpisujemy bez pytania
         if (Test-Path $vscodeMcpPath) {
             Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
 

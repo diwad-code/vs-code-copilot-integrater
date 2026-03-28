@@ -86,9 +86,6 @@
     // Path Intellisense — autouzupełnianie ścieżek plików
     "christian-kohler.path-intellisense",
 
-    // Bracket Pair Colorizer — koloruje pary nawiasów (wbudowane w VS Code ale rozszerzenie daje więcej)
-    "coenraads.bracket-pair-colorizer-2",
-
     // Better Comments — kolorowe komentarze: TODO, FIXME, !, ?
     "aaron-bond.better-comments",
 
