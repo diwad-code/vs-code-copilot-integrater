@@ -139,6 +139,9 @@
   // Pokaż wcięcia jako kolorowe linie
   "editor.guides.indentation": true,
   "editor.guides.bracketPairs": true,
+
+  // Zaznaczaj pasujące nawiasy
+  "editor.matchBrackets": "always",
   "editor.bracketPairColorization.enabled": true,
 
   // Pokaż spacje i tabulatory (debugging wcięć)

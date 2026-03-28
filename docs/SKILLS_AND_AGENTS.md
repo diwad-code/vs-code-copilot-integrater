@@ -229,16 +229,16 @@ Model Context Protocol (MCP) to otwarty standard który pozwala modelom AI
 
 | Serwer | Pakiet | Co robi | Wymagania |
 |--------|--------|---------|-----------|
-| **filesystem** | `@mcp/server-filesystem` | Czytanie i pisanie plików | Brak |
-| **memory** | `@mcp/server-memory` | Pamięć między sesjami | Brak |
-| **sequential-thinking** | `@mcp/server-sequential-thinking` | Planowanie kroków | Brak |
-| **github** | `@mcp/server-github` | GitHub API | `GITHUB_TOKEN` |
-| **brave-search** | `@mcp/server-brave-search` | Wyszukiwanie web | `BRAVE_API_KEY` |
-| **puppeteer** | `@mcp/server-puppeteer` | Automatyzacja Chrome | Brak |
-| **sqlite** | `@mcp/server-sqlite` | Lokalna baza danych | Brak |
+| **filesystem** | `@modelcontextprotocol/server-filesystem` | Czytanie i pisanie plików | Brak |
+| **memory** | `@modelcontextprotocol/server-memory` | Pamięć między sesjami | Brak |
+| **sequential-thinking** | `@modelcontextprotocol/server-sequential-thinking` | Planowanie kroków | Brak |
+| **github** | `@modelcontextprotocol/server-github` | GitHub API | `GITHUB_TOKEN` |
+| **brave-search** | `@modelcontextprotocol/server-brave-search` | Wyszukiwanie web | `BRAVE_API_KEY` |
+| **puppeteer** | `@modelcontextprotocol/server-puppeteer` | Automatyzacja Chrome | Brak |
+| **sqlite** | `@modelcontextprotocol/server-sqlite` | Lokalna baza danych | Brak |
 | **context7** | `@upstash/context7-mcp` | Dokumentacja frameworków | Brak |
 | **playwright** | `@playwright/mcp` | Testy E2E | Brak |
-| **magic-ui** | `@21st-dev/magic-mcp` | Generowanie komponentów GUI | `MAGIC_UI_API_KEY` (opcjonalny) |
+| **magic-ui** | `@21st-dev/magic-mcp` | Generowanie komponentów GUI | `MAGIC_UI_API_KEY` |
 
 ### Przykłady użycia MCP w Copilot Chat:
 

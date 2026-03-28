@@ -99,7 +99,7 @@ $mcpServers = @(
     @{
         Name        = 'magic-ui'
         Package     = '@21st-dev/magic-mcp'
-        Description = 'Generowanie komponentów UI (opcjonalnie — wymaga MAGIC_UI_API_KEY do działania)'
+        Description = 'Generowanie komponentów UI z promptów (wymaga MAGIC_UI_API_KEY)'
         Required    = $false
         EnvVar      = 'MAGIC_UI_API_KEY'
     }
@@ -244,6 +244,12 @@ try {
             $backup = "$vscodeMcpPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
             Copy-Item $vscodeMcpPath $backup
             Write-Log "Backup zapisano: $backup" -Level SUCCESS
+        }
+
+        # Upewniamy się że folder docelowy istnieje
+        $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
+        if (-not (Test-Path $vscodeMcpDir)) {
+            New-Item -Path $vscodeMcpDir -ItemType Directory -Force | Out-Null
         }
 
         # Kopiujemy nową konfigurację

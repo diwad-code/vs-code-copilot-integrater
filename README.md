@@ -14,11 +14,10 @@
 | 🧠 **Copilot Instructions** | Globalny system prompt — Copilot wie jak się zachowywać |
 | ⚙️ **VS Code Settings** | 200+ ustawień dla maksymalnej produktywności |
 | 🔌 **35+ Rozszerzeń** | Lista rekomendowanych rozszerzeń z automatyczną instalacją |
-| 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI generation |
-| 🎯 **6 Umiejętności** | + Ultimate Engineering (meta-skill) |
-| 🤖 **5 Agentów** | + Orchestrator (koordynacja zadań złożonych) |
-| 🧩 **Katalog 220+ pozycji** | 120 skills + 70 tools + 30 agents |
-| 📜 **6 Skryptów PS** | Setup, MCP, Copilot CLI, zmienne środowiskowe i końcowa weryfikacja |
+| 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI |
+| 🎯 **5 Skills** | PowerShell, Web Dev, Database, GUI Design, Windows Apps |
+| 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
+| 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
 | 📚 **4 Przewodniki** | Setup, Skills/Agents, Workflows, wdrożenie krok po kroku |
 
@@ -43,10 +42,7 @@ code .
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup-environment.ps1      # Git, Node.js, .NET 8, PS 7
 .\scripts\install-extensions.ps1     # 35+ rozszerzeń VS Code
-.\scripts\install-copilot-cli.ps1    # GitHub CLI + gh-copilot
-.\scripts\install-mcp-servers.ps1    # 10 serwerów MCP (w tym magic-ui)
-.\scripts\set-environment-variables.ps1 # GITHUB_TOKEN / BRAVE_API_KEY / MAGIC_UI_API_KEY
-.\scripts\verify-vscode-readiness.ps1   # Ostateczna kontrola gotowości
+.\scripts\install-mcp-servers.ps1    # 10 serwerów MCP
 ```
 
 ### Krok 3: Skonfiguruj GitHub Copilot
@@ -187,7 +183,7 @@ MCP rozszerza możliwości Copilota o dostęp do narzędzi zewnętrznych:
 | `sqlite` | Lokalna baza do testów | Brak |
 | `context7` | Aktualna dokumentacja frameworków | Brak |
 | `playwright` | Testy E2E przeglądarkowe | Brak |
-| `magic-ui` | Generowanie komponentów GUI | `MAGIC_UI_API_KEY` (opcjonalny) |
+| `magic-ui` | Generowanie komponentów UI | `MAGIC_UI_API_KEY` |
 
 ---
 
