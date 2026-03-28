@@ -266,8 +266,9 @@
   — VS Code Copilot automatycznie odczytuje ten plik jako system prompt.
   Jest czytelny dla ludzi i AI, można go rozszerzać.
 
-- **Decyzja:** Domyślny model ustawiony na `claude-sonnet-4-5` — najlepszy balans
-  między jakością (rozumienie polskich komentarzy, złożone planowanie) a szybkością.
+- **Decyzja historyczna:** Początkowo rozważano `claude-sonnet-4-5`, ale finalnie
+  projekt został dostrojony pod `gpt-5.3-codex` jako domyślny model implementacyjny
+  oraz `gpt-5.4` do planowania, audytu i researchu.
 
 - **Decyzja:** MCP konfiguracja w `mcp/mcp-config.json` — centralny plik który
   użytkownik kopiuje do `~/.vscode/mcp.json`. Umożliwia versjonowanie konfiguracji.
@@ -390,3 +391,50 @@
 #### 📝 Efekt:
 - Projekt ma komplet plików, skryptów i instrukcji potrzebnych do realnego wdrożenia
   w VS Code bez ręcznego „domyślania się” brakujących kroków.
+
+---
+
+### 2026-03-28 — Finalny hardening przed użyciem w VS Code
+
+**Model:** GitHub Copilot Task Agent
+**Kontekst:** Ostateczne domknięcie braków wykrytych podczas kontroli przeduruchomieniowej.
+
+#### ✅ Wykonano:
+
+- Naprawiono `scripts/setup-environment.ps1`
+  - usunięto konflikt parametru `-WhatIf` z `SupportsShouldProcess`
+  - skrypt znów poprawnie ładuje się jako polecenie PowerShell
+
+- Rozszerzono `scripts/install-extensions.ps1`
+  - instalator czyta teraz listę bezpośrednio z `.vscode/extensions.json`
+  - usunięto ryzyko driftu między rekomendacjami a realną instalacją
+  - automatyczna instalacja obejmuje także `ms-vscode.azure-account`
+
+- Rozszerzono `scripts/install-mcp-servers.ps1`
+  - dodano tryb `-SyncOnly`
+  - można zsynchronizować samo `mcp/mcp-config.json` do VS Code bez reinstalacji pakietów npm
+  - zachowano backup starego `mcp.json`
+
+- Rozszerzono `.vscode/tasks.json`
+  - dodano task `SETUP: Synchronizuj konfigurację MCP`
+
+- Rozszerzono `.github/prompts/`
+  - `codex-implementation.prompt.md` dla szybkiego wdrożenia zmian na GPT-5.3-Codex
+  - `gpt54-final-audit.prompt.md` dla końcowej kontroli kompletności na GPT-5.4
+
+- Wzmocniono `scripts/verify-vscode-readiness.ps1`
+  - walidacja ładowania wszystkich skryptów PowerShell jako poleceń
+  - walidacja obecności nowego taska synchronizacji MCP
+  - walidacja obecności nowych prompt files
+
+- Zaktualizowano dokumentację
+  - `README.md`
+  - `docs/SETUP.md`
+  - `docs/VS_CODE_STEP_BY_STEP.md`
+  - `WORKLOG.md`
+
+#### ✅ Weryfikacja:
+
+- Uruchomiono `pwsh -NoLogo -NoProfile -Command "Get-Command ./scripts/setup-environment.ps1 -Syntax"` po poprawce
+- Uruchomiono `pwsh -NoLogo -NoProfile -File ./scripts/verify-vscode-readiness.ps1`
+- Porównano `.vscode/extensions.json` z `scripts/install-extensions.ps1` po zmianie źródła danych

@@ -156,6 +156,19 @@ To doda serwery MCP, między innymi:
 - playwright,
 - magic-ui.
 
+Jeśli po jakimś czasie zmienisz tylko plik `mcp/mcp-config.json`, nie musisz
+instalować wszystkiego od nowa. Wystarczy:
+
+```powershell
+.\scripts\install-mcp-servers.ps1 -SyncOnly
+```
+
+Ten tryb:
+
+- kopiuje aktualną konfigurację MCP do VS Code,
+- zachowuje kopię zapasową starego `mcp.json`,
+- nie reinstaluje pakietów npm.
+
 ### Krok 5 — zmienne środowiskowe
 
 Uruchom:
@@ -237,6 +250,7 @@ Jeśli wolisz nie uruchamiać skryptów ręcznie:
    - `SETUP: Zainstaluj rozszerzenia VS Code`
    - `SETUP: Zainstaluj Copilot CLI`
    - `SETUP: Zainstaluj serwery MCP`
+   - `SETUP: Synchronizuj konfigurację MCP`
    - `SETUP: Ustaw zmienne środowiskowe`
    - `VERIFY: Sprawdź gotowość workspace`
 
@@ -282,6 +296,13 @@ W tym projekcie przyjęto prostą zasadę:
 - **Copilot Chat + GPT-5.4** → analiza, research, przegląd architektury
 - **Copilot Chat + GPT-5.3-Codex** → implementacja zmian w plikach
 - **`gh copilot`** → szybkie komendy shell i krótkie podpowiedzi terminalowe
+
+### Gotowe slash commands, które warto używać
+
+- `/kickoff` → gdy zaczynasz zadanie i chcesz najpierw plan
+- `/codex-implementation` → gdy przechodzisz do wdrożenia zmian na GPT-5.3-Codex
+- `/gpt54-final-audit` → gdy kończysz pracę i chcesz końcową kontrolę na GPT-5.4
+- `/worklog` → gdy aktualizujesz `WORKLOG.md`
 
 ---
 

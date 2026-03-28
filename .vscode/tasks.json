@@ -213,6 +213,23 @@
       }
     },
     {
+      // Synchronizuje samą konfigurację MCP do VS Code bez reinstalacji pakietów npm
+      "label": "SETUP: Synchronizuj konfigurację MCP",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/install-mcp-servers.ps1",
+        "-SyncOnly"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
       // Instaluje GitHub CLI + rozszerzenie gh-copilot
       "label": "SETUP: Zainstaluj Copilot CLI",
       "type": "shell",

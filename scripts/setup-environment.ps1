@@ -10,11 +10,7 @@
 param(
     # Pomija instalację narzędzi które wymagają praw administratora
     [Parameter(Mandatory=$false)]
-    [switch]$NoAdmin,
-
-    # Wyświetla co by zostało zainstalowane bez faktycznej instalacji
-    [Parameter(Mandatory=$false)]
-    [switch]$WhatIf
+    [switch]$NoAdmin
 )
 
 $ErrorActionPreference = 'Stop'
