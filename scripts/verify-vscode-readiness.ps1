@@ -112,7 +112,7 @@ if (Test-Path $settingsPath) {
     }
 }
 else {
-    Add-Result -Results $results -Status 'FAIL' -Message 'Plik .vscode/settings.json nie istnieje – nie można zweryfikować ustawienia GPT-5.3-Codex'
+    Add-Result -Results $results -Status 'FAIL' -Message 'Plik .vscode/settings.json nie istnieje — nie można zweryfikować ustawienia GPT-5.3-Codex'
 }
 
 $setupDocPath = Join-Path $workspaceRoot 'docs/SETUP.md'
@@ -126,7 +126,7 @@ if (Test-Path $setupDocPath) {
     }
 }
 else {
-    Add-Result -Results $results -Status 'FAIL' -Message 'Brak pliku dokumentacji docs/SETUP.md – nie można zweryfikować opisu GPT-5.4'
+    Add-Result -Results $results -Status 'FAIL' -Message 'Brak pliku dokumentacji docs/SETUP.md — nie można zweryfikować opisu GPT-5.4'
 }
 
 $envVars = @('GITHUB_TOKEN', 'BRAVE_API_KEY', 'MAGIC_UI_API_KEY')
