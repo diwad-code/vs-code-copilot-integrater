@@ -18,9 +18,9 @@
 | 🎯 **6 Umiejętności** | + Ultimate Engineering (meta-skill) |
 | 🤖 **5 Agentów** | + Orchestrator (koordynacja zadań złożonych) |
 | 🧩 **Katalog 220+ pozycji** | 120 skills + 70 tools + 30 agents |
-| 📜 **3 Skrypty PS + 1 Task CLI** | Automatyczna instalacja środowiska + Copilot CLI readiness |
+| 📜 **6 Skryptów PS** | Setup, MCP, Copilot CLI, zmienne środowiskowe i końcowa weryfikacja |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
-| 📚 **3 Przewodniki** | Setup, Skills/Agents, Workflows |
+| 📚 **4 Przewodniki** | Setup, Skills/Agents, Workflows, wdrożenie krok po kroku |
 
 ---
 
@@ -43,7 +43,10 @@ code .
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup-environment.ps1      # Git, Node.js, .NET 8, PS 7
 .\scripts\install-extensions.ps1     # 35+ rozszerzeń VS Code
+.\scripts\install-copilot-cli.ps1    # GitHub CLI + gh-copilot
 .\scripts\install-mcp-servers.ps1    # 10 serwerów MCP (w tym magic-ui)
+.\scripts\set-environment-variables.ps1 # GITHUB_TOKEN / BRAVE_API_KEY / MAGIC_UI_API_KEY
+.\scripts\verify-vscode-readiness.ps1   # Ostateczna kontrola gotowości
 ```
 
 ### Krok 3: Skonfiguruj GitHub Copilot
@@ -63,7 +66,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 ### Krok 3c: Przygotuj Copilot CLI (gh-copilot)
 
 ```powershell
-# VS Code Task: Terminal > Run Task > SETUP: Copilot CLI (gh-copilot)
+# VS Code Task: Terminal > Run Task > SETUP: Zainstaluj Copilot CLI
 # Lub ręcznie:
 winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements
 gh extension install github/gh-copilot
@@ -74,14 +77,12 @@ gh copilot --help
 ### Krok 4: Ustaw zmienne środowiskowe (opcjonalne, dla MCP)
 
 ```powershell
-# GitHub Token (dla MCP GitHub) — https://github.com/settings/tokens
-[Environment]::SetEnvironmentVariable('GITHUB_TOKEN', 'ghp_...', 'User')
-
-# Brave Search Key (dla MCP search) — https://brave.com/search/api
-[Environment]::SetEnvironmentVariable('BRAVE_API_KEY', 'BSA...', 'User')
+# Najwygodniej:
+.\scripts\set-environment-variables.ps1
 ```
 
 Pełna instrukcja: [docs/SETUP.md](docs/SETUP.md)
+Bardzo szczegółowe wdrożenie: [docs/VS_CODE_STEP_BY_STEP.md](docs/VS_CODE_STEP_BY_STEP.md)
 
 ---
 
@@ -89,6 +90,9 @@ Pełna instrukcja: [docs/SETUP.md](docs/SETUP.md)
 
 ```
 vs-code-copilot-integrater/
+│
+├── data/
+│   └── .gitkeep                  ← 🗂️ Folder pod lokalną bazę SQLite / artefakty MCP
 │
 ├── .github/
 │   ├── copilot-instructions.md    ← 🧠 System prompt Copilota (KLUCZOWY PLIK)
@@ -120,13 +124,17 @@ vs-code-copilot-integrater/
 ├── docs/
 │   ├── SETUP.md                   ← 📖 Instrukcja instalacji
 │   ├── SKILLS_AND_AGENTS.md       ← 🛠️ Przewodnik po skillach i agentach
-│   └── DEVELOPMENT_WORKFLOWS.md   ← 🔄 Przepływy pracy
+│   ├── DEVELOPMENT_WORKFLOWS.md   ← 🔄 Przepływy pracy
+│   ├── VS_CODE_STEP_BY_STEP.md    ← 🪜 Bardzo dokładne wdrożenie krok po kroku
 │   └── ULTIMATE_SKILLS_TOOLS_AGENTS_CATALOG.md ← 📚 Katalog 220+
 │
 ├── scripts/
 │   ├── setup-environment.ps1      ← 🔧 Instalacja środowiska
 │   ├── install-extensions.ps1     ← 🔌 Instalacja rozszerzeń VS Code
-│   └── install-mcp-servers.ps1    ← 🌐 Instalacja serwerów MCP
+│   ├── install-copilot-cli.ps1    ← 🤖 Instalacja GitHub CLI + gh-copilot
+│   ├── install-mcp-servers.ps1    ← 🌐 Instalacja serwerów MCP
+│   ├── set-environment-variables.ps1 ← 🔐 Ustawianie zmiennych środowiskowych
+│   └── verify-vscode-readiness.ps1 ← ✅ Ostateczna weryfikacja gotowości
 │
 ├── templates/
 │   ├── project-plan-template.md   ← 📋 Szablon planu projektu

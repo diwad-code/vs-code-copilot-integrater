@@ -39,7 +39,10 @@ cd C:\Projekty\vs-code-copilot-integrater
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup-environment.ps1   # Narzędzia deweloperskie
 .\scripts\install-extensions.ps1  # Rozszerzenia VS Code
+.\scripts\install-copilot-cli.ps1 # GitHub CLI + gh-copilot
 .\scripts\install-mcp-servers.ps1 # Serwery MCP
+.\scripts\set-environment-variables.ps1 # Zmienne środowiskowe
+.\scripts\verify-vscode-readiness.ps1 # Końcowa kontrola
 
 # 4. Uruchom ponownie VS Code
 ```
@@ -119,6 +122,12 @@ Copy-Item mcp\mcp-config.json "$env:APPDATA\Code\User\mcp.json"
 
 Ustaw wymagane zmienne środowiskowe (niezbędne dla niektórych MCP serwerów):
 
+**Najwygodniej:**
+
+```powershell
+.\scripts\set-environment-variables.ps1
+```
+
 ```powershell
 # GitHub Personal Access Token (zakres: repo, read:user)
 # Utwórz na: https://github.com/settings/tokens
@@ -188,9 +197,19 @@ gh copilot suggest -t shell "Zaproponuj komendę do ..."
 ### VS Code Task
 
 W projekcie dostępny jest task:
-- `SETUP: Copilot CLI (gh-copilot)`
+- `SETUP: Zainstaluj Copilot CLI`
 
 Uruchom: `Terminal > Run Task` i wybierz ten task, aby szybko przygotować CLI.
+
+---
+
+## 🪜 Bardzo dokładna instrukcja wdrożenia
+
+Jeśli chcesz przejść przez cały proces najprostszą możliwą ścieżką, otwórz:
+
+`docs/VS_CODE_STEP_BY_STEP.md`
+
+To jest pełna instrukcja „klik po kliku” i „krok po kroku”, napisana prostym językiem.
 
 ---
 
@@ -214,6 +233,9 @@ Get-Module -ListAvailable PSScriptAnalyzer, Pester, ImportExcel | Select Name, V
 # Sprawdź zainstalowane pakiety MCP
 Write-Host "`n=== Pakiety MCP ===" -ForegroundColor Cyan
 npm list -g --depth=0 2>$null | Select-String "modelcontextprotocol|context7|playwright"
+
+# Sprawdź gotowość całego workspace
+.\scripts\verify-vscode-readiness.ps1
 ```
 
 **W VS Code:**

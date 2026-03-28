@@ -213,16 +213,47 @@
       }
     },
     {
-      // Konfiguruje gotowość Copilot CLI (GitHub CLI + gh-copilot)
-      "label": "SETUP: Copilot CLI (gh-copilot)",
+      // Instaluje GitHub CLI + rozszerzenie gh-copilot
+      "label": "SETUP: Zainstaluj Copilot CLI",
       "type": "shell",
-      "command": "powershell",
+      "command": "pwsh",
       "args": [
         "-ExecutionPolicy", "Bypass",
-        "-Command",
-        "if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements }; gh extension list 2>$null | Select-String gh-copilot | Out-Null; if ($LASTEXITCODE -ne 0) { gh extension install github/gh-copilot }; gh copilot --help"
+        "-File", "${workspaceFolder}/scripts/install-copilot-cli.ps1"
       ],
       "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      // Ustawia brakujące zmienne środowiskowe dla MCP i Copilota
+      "label": "SETUP: Ustaw zmienne środowiskowe",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/set-environment-variables.ps1"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      // Wykonuje końcową kontrolę kompletności projektu i środowiska
+      "label": "VERIFY: Sprawdź gotowość workspace",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/verify-vscode-readiness.ps1"
+      ],
+      "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "shared",
@@ -237,7 +268,7 @@
         "SETUP: Zainstaluj środowisko",
         "SETUP: Zainstaluj rozszerzenia VS Code",
         "SETUP: Zainstaluj serwery MCP",
-        "SETUP: Copilot CLI (gh-copilot)"
+        "SETUP: Zainstaluj Copilot CLI"
       ],
       "dependsOrder": "sequence",
       "group": {

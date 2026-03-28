@@ -262,3 +262,35 @@
 #### 📝 Efekt:
 - Repo jest przygotowane do pracy w VS Code i Copilot CLI z naciskiem na duet
   **GPT-5.3-Codex + GPT-5.4** oraz pełną konfigurację MCP (w tym `magic-ui`).
+
+---
+
+### 2026-03-28 — Finalizacja przeduruchomieniowa i domknięcie brakujących elementów
+
+**Model:** Copilot Task Agent
+**Kontekst:** Ostateczna kontrola kompletności projektu przed wdrożeniem do VS Code.
+
+#### ✅ Wykonano:
+
+- Zweryfikowano brak aktywnych konfliktów merge w repo.
+- Dodano brakujące skrypty operacyjne:
+  - `scripts/install-copilot-cli.ps1` — pełna instalacja i weryfikacja `gh` + `gh-copilot`
+  - `scripts/set-environment-variables.ps1` — interaktywne ustawianie `GITHUB_TOKEN`, `BRAVE_API_KEY`, `MAGIC_UI_API_KEY`
+  - `scripts/verify-vscode-readiness.ps1` — końcowa kontrola gotowości workspace i środowiska
+- Rozszerzono `.vscode/tasks.json` o:
+  - instalację Copilot CLI,
+  - ustawianie zmiennych środowiskowych,
+  - końcową walidację gotowości.
+- Dodano brakujące pliki porządkowe:
+  - `.gitignore`
+  - `data/.gitkeep`
+- Ujednolicono dokumentację i instrukcje:
+  - `README.md`
+  - `docs/SETUP.md`
+  - `docs/VS_CODE_STEP_BY_STEP.md`
+- Poprawiono niespójność manualnej komendy instalacji MCP w `mcp/mcp-config.json`,
+  aby uwzględniała wszystkie 10 serwerów.
+
+#### 📝 Efekt:
+- Projekt ma komplet plików, skryptów i instrukcji potrzebnych do realnego wdrożenia
+  w VS Code bez ręcznego „domyślania się” brakujących kroków.

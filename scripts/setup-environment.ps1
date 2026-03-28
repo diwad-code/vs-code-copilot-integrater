@@ -262,4 +262,4 @@ foreach ($tool in $tools) {
 
 Write-Host ""
 Write-Log "Środowisko deweloperskie skonfigurowane!" -Level SUCCESS
-Write-Log "Następny krok: uruchom install-extensions.ps1 i install-mcp-servers.ps1" -Level INFO
+Write-Log "Następne kroki: install-extensions.ps1, install-copilot-cli.ps1, install-mcp-servers.ps1, set-environment-variables.ps1, verify-vscode-readiness.ps1" -Level INFO
