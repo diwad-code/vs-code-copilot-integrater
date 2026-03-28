@@ -175,6 +175,41 @@ Jeśli czegoś jeszcze nie masz, po prostu naciśnij **Enter**, aby pominąć.
 Jeżeli wcześniej skopiowałeś `.env.example` do `.env` i wpisałeś tam wartości,
 skrypt automatycznie je odczyta i nie będzie trzeba wpisywać wszystkiego od zera.
 
+### Krok 5a — lista miejsc do ręcznego uzupełnienia danych (tokeny/API/zmienne)
+
+W trakcie wdrożenia ręcznie uzupełniasz dane tylko w poniższych miejscach:
+
+1. **Plik lokalny `.env`** (tworzony z `.env.example`):
+   - `GITHUB_TOKEN=...`
+   - `BRAVE_API_KEY=...`
+   - `MAGIC_UI_API_KEY=...`
+   - **Uwaga:** plik `.env` jest lokalny i nie powinien trafiać do repozytorium.
+
+2. **Interaktywne pytania skryptu** `.\scripts\set-environment-variables.ps1`:
+   - skrypt poprosi Cię o:
+     - `GITHUB_TOKEN`
+     - `BRAVE_API_KEY`
+     - `MAGIC_UI_API_KEY`
+   - możesz też podać te wartości parametrami skryptu zamiast wpisywania ręcznego.
+
+3. **Zmienne środowiskowe użytkownika w Windows** (zapisywane przez skrypt):
+   - `GITHUB_TOKEN`
+   - `BRAVE_API_KEY`
+   - `MAGIC_UI_API_KEY`
+   - te wartości są potem używane przez MCP.
+
+4. **Źródła, z których pobierasz sekrety** (poza repo):
+   - GitHub PAT: https://github.com/settings/tokens
+   - Brave API Key: https://brave.com/search/api
+   - Magic UI API Key: https://21st.dev
+
+5. **MCP config używa tych zmiennych automatycznie** (bez ręcznej edycji tokenów w JSON):
+   - `mcp/mcp-config.json` mapuje:
+     - `GITHUB_PERSONAL_ACCESS_TOKEN` ← `${env:GITHUB_TOKEN}`
+     - `BRAVE_API_KEY` ← `${env:BRAVE_API_KEY}`
+     - `API_KEY` (magic-ui) ← `${env:MAGIC_UI_API_KEY}`
+   - dlatego nie wpisuj sekretów bezpośrednio do `mcp-config.json` ani `mcp.json`.
+
 ### Krok 6 — końcowa weryfikacja
 
 Uruchom:
