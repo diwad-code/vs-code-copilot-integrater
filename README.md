@@ -17,7 +17,7 @@
 | 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI |
 | 🎯 **5 Skills** | PowerShell, Web Dev, Database, GUI Design, Windows Apps |
 | 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
-| 📜 **3 Skrypty PS** | Automatyczna instalacja środowiska |
+| 📜 **7 Skryptów PS** | Automatyczna instalacja, wdrożenie, zmienne i weryfikacja |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
 | 📚 **4 Przewodniki** | Setup, Skills/Agents, Workflows, wdrożenie krok po kroku |
 
@@ -40,9 +40,8 @@ code .
 ```powershell
 # Uruchom jako administrator dla pełnej instalacji
 Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\setup-environment.ps1      # Git, Node.js, .NET 8, PS 7
-.\scripts\install-extensions.ps1     # 35+ rozszerzeń VS Code
-.\scripts\install-mcp-servers.ps1    # 10 serwerów MCP
+Copy-Item .env.example .env
+.\scripts\complete-vscode-setup.ps1  # Pełne wdrożenie workspace + końcowa weryfikacja
 ```
 
 ### Krok 3: Skonfiguruj GitHub Copilot
@@ -58,6 +57,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 - **Model do złożonego reasoning/research:** `GPT-5.4`
 - W `.vscode/settings.json` domyślny model jest ustawiony na `gpt-5.3-codex`.
 - Dla zadań analitycznych przełączaj model ręcznie na `gpt-5.4`.
+- `gh copilot` traktuj jako szybkie narzędzie terminalowe; planowanie i złożone decyzje prowadź w Copilot Chat z `GPT-5.4`.
 
 ### Krok 3c: Przygotuj Copilot CLI (gh-copilot)
 
@@ -74,8 +74,11 @@ gh copilot --help
 
 ```powershell
 # Najwygodniej:
+Copy-Item .env.example .env
 .\scripts\set-environment-variables.ps1
 ```
+
+Skrypt automatycznie odczyta wartości z `.env`, jeśli plik istnieje.
 
 Pełna instrukcja: [docs/SETUP.md](docs/SETUP.md)
 Bardzo szczegółowe wdrożenie: [docs/VS_CODE_STEP_BY_STEP.md](docs/VS_CODE_STEP_BY_STEP.md)
@@ -129,6 +132,7 @@ vs-code-copilot-integrater/
 │   ├── install-extensions.ps1     ← 🔌 Instalacja rozszerzeń VS Code
 │   ├── install-copilot-cli.ps1    ← 🤖 Instalacja GitHub CLI + gh-copilot
 │   ├── install-mcp-servers.ps1    ← 🌐 Instalacja serwerów MCP
+│   ├── complete-vscode-setup.ps1  ← 🚀 Pełne wdrożenie workspace + verify
 │   ├── set-environment-variables.ps1 ← 🔐 Ustawianie zmiennych środowiskowych
 │   └── verify-vscode-readiness.ps1 ← ✅ Ostateczna weryfikacja gotowości
 │
@@ -184,6 +188,13 @@ MCP rozszerza możliwości Copilota o dostęp do narzędzi zewnętrznych:
 | `context7` | Aktualna dokumentacja frameworków | Brak |
 | `playwright` | Testy E2E przeglądarkowe | Brak |
 | `magic-ui` | Generowanie komponentów UI | `MAGIC_UI_API_KEY` |
+
+### Rekomendowany routing pod modele
+
+- **GPT-5.3-Codex** → implementacja, refaktoryzacja, terminal, szybkie poprawki
+- **GPT-5.4** → planowanie, review, research, analiza ryzyka
+- **Najważniejsze MCP dla GPT-5.4** → `sequential-thinking`, `context7`, `github`, `brave-search`
+- **Najważniejsze MCP dla GPT-5.3-Codex** → `filesystem`, `github`, `playwright`, `sqlite`
 
 ---
 

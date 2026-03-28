@@ -262,18 +262,42 @@
     },
 
     {
-      // Uruchamia pełny setup wszystkiego
+      // Uruchamia pełne wdrożenie workspace razem z końcową weryfikacją
       "label": "SETUP: Pełna instalacja",
-      "dependsOn": [
-        "SETUP: Zainstaluj środowisko",
-        "SETUP: Zainstaluj rozszerzenia VS Code",
-        "SETUP: Zainstaluj serwery MCP",
-        "SETUP: Zainstaluj Copilot CLI"
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/complete-vscode-setup.ps1"
       ],
-      "dependsOrder": "sequence",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
       "group": {
         "kind": "build",
         "isDefault": true
+      }
+    },
+    {
+      // Uruchamia pełne wdrożenie bez interaktywnego ustawiania sekretów
+      "label": "SETUP: Pełna instalacja bez zmiennych środowiskowych",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}/scripts/complete-vscode-setup.ps1",
+        "-SkipEnvironmentVariables"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
       }
     }
   ]

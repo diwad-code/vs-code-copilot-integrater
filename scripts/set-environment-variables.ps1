@@ -20,6 +20,10 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$MagicUiApiKey,
 
+    # Opcjonalnie: ścieżka do pliku .env z wartościami do zaimportowania
+    [Parameter(Mandatory=$false)]
+    [string]$EnvFilePath = (Join-Path (Split-Path -Path $PSScriptRoot -Parent) '.env'),
+
     # Pokaż tylko status zmiennych bez modyfikacji
     [Parameter(Mandatory=$false)]
     [switch]$ShowStatusOnly
@@ -74,21 +78,98 @@ function Set-UserEnvironmentVariable {
     Set-Item -Path "Env:$Name" -Value $Value
 }
 
+# Odczytuje prosty plik .env w formacie KEY=VALUE
+function Import-EnvFileValues {
+    param([string]$Path)
+
+    $values = @{}
+
+    if (-not $Path -or -not (Test-Path $Path)) {
+        return $values
+    }
+
+    foreach ($line in (Get-Content -Path $Path)) {
+        $trimmedLine = $line.Trim()
+
+        if (-not $trimmedLine -or $trimmedLine.StartsWith('#')) {
+            continue
+        }
+
+        $parts = $trimmedLine -split '=', 2
+        if ($parts.Count -ne 2) {
+            continue
+        }
+
+        $name = $parts[0].Trim()
+        $value = $parts[1].Trim()
+
+        # Usuwamy otaczające cudzysłowy lub apostrofy, aby .env działał tak samo jak w popularnych narzędziach
+        $startsAndEndsWithDoubleQuote = $value.Length -ge 2 -and $value.StartsWith('"') -and $value.EndsWith('"')
+        $startsAndEndsWithSingleQuote = $value.Length -ge 2 -and $value.StartsWith("'") -and $value.EndsWith("'")
+
+        if ($startsAndEndsWithDoubleQuote -or $startsAndEndsWithSingleQuote) {
+            $value = $value.Substring(1, $value.Length - 2)
+        }
+
+        if ($name) {
+            $values[$name] = $value
+        }
+    }
+
+    return $values
+}
+
+# Delikatna walidacja formatu sekretu — ostrzega, ale nie blokuje pracy
+function Test-SecretFormat {
+    param(
+        [string]$Name,
+        [string]$Value
+    )
+
+    if (-not $Value) {
+        return $true
+    }
+
+    switch ($Name) {
+        'GITHUB_TOKEN' {
+            # Akceptujemy najczęstsze prefiksy tokenów GitHub używanych w praktyce przez MCP i GH CLI
+            return ($Value -match '^(gh[pous]_|github_pat_)') -and $Value.Length -ge 20
+        }
+        'BRAVE_API_KEY' {
+            # Dla Brave i Magic UI stosujemy lekką kontrolę długości, aby ostrzec o ewidentnie pustych lub uciętych wartościach
+            return $Value.Length -ge 10
+        }
+        'MAGIC_UI_API_KEY' {
+            # Dla Brave i Magic UI stosujemy lekką kontrolę długości, aby ostrzec o ewidentnie pustych lub uciętych wartościach
+            return $Value.Length -ge 10
+        }
+        default {
+            return $true
+        }
+    }
+}
+
+$envFileValues = Import-EnvFileValues -Path $EnvFilePath
+
+if ($envFileValues.Count -gt 0) {
+    Write-Host "Wczytano wartości z pliku: $EnvFilePath" -ForegroundColor Cyan
+}
+
 $variables = @(
     @{
         Name        = 'GITHUB_TOKEN'
         Description = 'Token GitHub do MCP GitHub (opcjonalny, ale zalecany)'
-        Value       = $GitHubToken
+        Value       = $(if ($GitHubToken) { $GitHubToken } else { $envFileValues['GITHUB_TOKEN'] })
     },
     @{
         Name        = 'BRAVE_API_KEY'
         Description = 'Klucz Brave Search do researchu webowego (opcjonalny)'
-        Value       = $BraveApiKey
+        Value       = $(if ($BraveApiKey) { $BraveApiKey } else { $envFileValues['BRAVE_API_KEY'] })
     },
     @{
         Name        = 'MAGIC_UI_API_KEY'
         Description = 'Klucz Magic UI do generowania komponentów GUI (opcjonalny)'
-        Value       = $MagicUiApiKey
+        Value       = $(if ($MagicUiApiKey) { $MagicUiApiKey } else { $envFileValues['MAGIC_UI_API_KEY'] })
     }
 )
 
@@ -113,6 +194,10 @@ foreach ($item in $variables) {
     }
 
     if ($item.Value) {
+        if (-not (Test-SecretFormat -Name $item.Name -Value $item.Value)) {
+            Write-Host "Uwaga: format wartości dla $($item.Name) wygląda nietypowo. Zapisuję ją mimo to." -ForegroundColor Yellow
+        }
+
         Set-UserEnvironmentVariable -Name $item.Name -Value $item.Value
         Write-Host "Ustawiono $($item.Name): $(Get-MaskedValue -Value $item.Value)" -ForegroundColor Green
     }
