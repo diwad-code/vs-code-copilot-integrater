@@ -1,0 +1,168 @@
+{
+  // ============================================================
+  // MCP (Model Context Protocol) — Konfiguracja serwerów narzędzi
+  // Plik: mcp/mcp-config.json
+  // Cel: Definiuje narzędzia dostępne dla Copilota i modeli AI
+  //
+  // MCP pozwala na rozszerzenie możliwości Copilota o:
+  // - dostęp do plików i systemu
+  // - wyszukiwanie w internecie
+  // - operacje na bazach danych
+  // - automatyzację przeglądarki
+  // - pamięć między sesjami
+  //
+  // Dokumentacja: https://modelcontextprotocol.io
+  // GitHub Copilot MCP: https://docs.github.com/copilot/using-mcp
+  //
+  // UŻYCIE: Skopiuj do ~/.vscode/mcp.json lub użyj skryptu setup
+  // ============================================================
+
+  "servers": {
+
+    // ── FILESYSTEM — Operacje na plikach ──────────────────────
+    // Pozwala Copilotowi czytać, pisać i zarządzać plikami
+    // Instalacja: npm install -g @modelcontextprotocol/server-filesystem
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ],
+      "description": "Dostęp do systemu plików — czytanie, pisanie, lista katalogów"
+    },
+
+    // ── GITHUB — Integracja z GitHub API ─────────────────────
+    // Pozwala Copilotowi tworzyć issues, PR, przeglądać repozytoria
+    // Wymagany: GITHUB_PERSONAL_ACCESS_TOKEN w zmiennych środowiskowych
+    // Instalacja: npm install -g @modelcontextprotocol/server-github
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
+      },
+      "description": "GitHub API — repozytoria, issues, pull requests, actions"
+    },
+
+    // ── MEMORY — Pamięć między sesjami ───────────────────────
+    // Przechowuje kontekst projektów między sesjami Copilota
+    // Instalacja: npm install -g @modelcontextprotocol/server-memory
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "description": "Trwała pamięć — zapisuje fakty o projekcie między sesjami czatu"
+    },
+
+    // ── BRAVE SEARCH — Wyszukiwanie w internecie ──────────────
+    // Pozwala Copilotowi szukać aktualnych informacji, dokumentacji, rozwiązań
+    // Wymagany: BRAVE_API_KEY — darmowy plan na brave.com/search/api
+    // Instalacja: npm install -g @modelcontextprotocol/server-brave-search
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "${env:BRAVE_API_KEY}"
+      },
+      "description": "Wyszukiwarka Brave — research, dokumentacja, aktualne rozwiązania"
+    },
+
+    // ── PUPPETEER — Automatyzacja przeglądarki ────────────────
+    // Automatyzacja Chrome/Chromium: screenshoty, testy E2E, web scraping
+    // Instalacja: npm install -g @modelcontextprotocol/server-puppeteer
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "description": "Puppeteer — screenshoty stron, testy E2E, automatyzacja przeglądarki"
+    },
+
+    // ── SQLITE — Lokalna baza danych ──────────────────────────
+    // Operacje SQL na lokalnych plikach SQLite (do testów, prototypów)
+    // Instalacja: npm install -g @modelcontextprotocol/server-sqlite
+    "sqlite": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "--db-path", "${workspaceFolder}/data/local.db"
+      ],
+      "description": "SQLite — lokalna baza danych do prototypowania i testów"
+    },
+
+    // ── PLAYWRIGHT — Zaawansowane testy E2E ───────────────────
+    // Lepsza alternatywa dla Puppeteer: obsługuje Chrome, Firefox, Safari
+    // Instalacja: npm install -g @playwright/mcp
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp",
+        "--headless"
+      ],
+      "description": "Playwright — testy E2E dla Chrome/Firefox/Safari, screenshoty UI"
+    },
+
+    // ── SEQUENTIAL THINKING — Złożone planowanie ─────────────
+    // Pomaga modelom w strukturyzowanym rozwiązywaniu złożonych problemów
+    // Instalacja: npm install -g @modelcontextprotocol/server-sequential-thinking
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "description": "Sequential Thinking — krok po kroku rozwiązywanie złożonych problemów"
+    },
+
+    // ── CONTEXT7 — Aktualna dokumentacja bibliotek ────────────
+    // Pobiera aktualną dokumentację frameworków/bibliotek (nie halucynuje)
+    // Instalacja: npm install -g @upstash/context7-mcp
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "description": "Context7 — aktualna dokumentacja React, Vue, Tailwind, PowerShell itp."
+    },
+
+    // ── MAGIC UI — Generowanie komponentów GUI ────────────────
+    // Generuje piękne komponenty React/HTML z opisów naturalnym językiem
+    // Instalacja: npm install -g @21st-dev/magic-mcp
+    "magic-ui": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@21st-dev/magic-mcp@latest"
+      ],
+      "env": {
+        "API_KEY": "${env:MAGIC_UI_API_KEY}"
+      },
+      "description": "Magic UI — generowanie pięknych komponentów GUI z opisu w języku naturalnym"
+    }
+  },
+
+  // ── INFORMACJE INSTALACYJNE ────────────────────────────────
+  "_install_instructions": {
+    "note": "Uruchom scripts/install-mcp-servers.ps1 aby automatycznie zainstalować wszystkie serwery MCP",
+    "manual_install": "npm install -g @modelcontextprotocol/server-filesystem @modelcontextprotocol/server-github @modelcontextprotocol/server-memory @modelcontextprotocol/server-brave-search @modelcontextprotocol/server-puppeteer @modelcontextprotocol/server-sqlite @modelcontextprotocol/server-sequential-thinking",
+    "vscode_config_location": "Skopiuj sekcję 'servers' do: ~/.vscode/mcp.json lub VS Code Settings > MCP",
+    "required_env_vars": [
+      "GITHUB_TOKEN — Personal Access Token z GitHub (Settings > Developer Settings)",
+      "BRAVE_API_KEY — Klucz API z brave.com/search/api (darmowy plan)",
+      "MAGIC_UI_API_KEY — Klucz API z magic.dev (opcjonalny)"
+    ]
+  }
+}

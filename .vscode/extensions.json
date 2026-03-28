@@ -1,0 +1,155 @@
+{
+  // ============================================================
+  // Rekomendowane rozszerzenia VS Code dla maksymalnej produktywności
+  // Plik: .vscode/extensions.json
+  // Cel: Automatyczna propozycja instalacji rozszerzeń po otwarciu workspace
+  // Użycie: VS Code wyświetli powiadomienie "Zainstaluj rekomendowane rozszerzenia"
+  // ============================================================
+
+  "recommendations": [
+    // ── AI I COPILOT ──────────────────────────────────────────
+
+    // GitHub Copilot — główny asystent AI (wymagany)
+    "github.copilot",
+
+    // GitHub Copilot Chat — czat z AI, agenci, edycje wieloplikowe (wymagany)
+    "github.copilot-chat",
+
+    // ── FORMATOWANIE I LINTING ────────────────────────────────
+
+    // Prettier — automatyczne formatowanie kodu (JS, TS, HTML, CSS, JSON, MD)
+    "esbenp.prettier-vscode",
+
+    // ESLint — wykrywanie błędów JavaScript/TypeScript
+    "dbaeumer.vscode-eslint",
+
+    // ── GIT ───────────────────────────────────────────────────
+
+    // GitLens — supercharged Git: blame, history, porównania
+    "eamodio.gitlens",
+
+    // Git Graph — wizualne drzewo commitów
+    "mhutchie.git-graph",
+
+    // ── POWERSHELL ────────────────────────────────────────────
+
+    // PowerShell — pełne wsparcie dla PS: IntelliSense, debugger, Pester
+    "ms-vscode.powershell",
+
+    // ── BAZY DANYCH ───────────────────────────────────────────
+
+    // Database Client — połączenia z SQL Server, Oracle, MySQL, PostgreSQL
+    "cweijan.vscode-database-client2",
+
+    // SQL Formatter — automatyczne formatowanie SQL
+    "inferrinizzard.prettier-sql-vscode",
+
+    // ── WEB DEVELOPMENT ───────────────────────────────────────
+
+    // Live Server — lokalny serwer z hot-reload dla HTML/CSS/JS
+    "ritwickdey.liveserver",
+
+    // Auto Rename Tag — automatyczne zmienianie par tagów HTML/XML
+    "formulahendry.auto-rename-tag",
+
+    // Auto Close Tag — automatyczne zamykanie tagów HTML
+    "formulahendry.auto-close-tag",
+
+    // CSS Peek — nawigacja do definicji CSS z HTML
+    "pranaygp.vscode-css-peek",
+
+    // HTML CSS Support — IntelliSense dla klas CSS w HTML
+    "ecmel.vscode-html-css",
+
+    // Tailwind CSS IntelliSense — autouzupełnianie klas Tailwind
+    "bradlc.vscode-tailwindcss",
+
+    // ES7+ React/Redux snippets — szybkie snippety dla React
+    "dsznajder.es7-react-js-snippets",
+
+    // Vue Language Features — wsparcie dla Vue.js 3
+    "vue.volar",
+
+    // ── REST API ──────────────────────────────────────────────
+
+    // Thunder Client — lekki klient REST API wbudowany w VS Code
+    "rangav.vscode-thunder-client",
+
+    // REST Client — testowanie API bezpośrednio z pliku .http
+    "humao.rest-client",
+
+    // ── PRODUKTYWNOŚĆ ─────────────────────────────────────────
+
+    // Error Lens — wyświetla błędy i ostrzeżenia inline przy kodzie
+    "usernamehw.errorlens",
+
+    // Path Intellisense — autouzupełnianie ścieżek plików
+    "christian-kohler.path-intellisense",
+
+    // Bracket Pair Colorizer — koloruje pary nawiasów (wbudowane w VS Code ale rozszerzenie daje więcej)
+    "coenraads.bracket-pair-colorizer-2",
+
+    // Better Comments — kolorowe komentarze: TODO, FIXME, !, ?
+    "aaron-bond.better-comments",
+
+    // Todo Tree — lista wszystkich TODO/FIXME w projekcie
+    "gruntfuggly.todo-tree",
+
+    // indent-rainbow — kolorowe wcięcia dla łatwiejszego czytania
+    "oderwat.indent-rainbow",
+
+    // ── MARKDOWN ──────────────────────────────────────────────
+
+    // Markdown All in One — podgląd, snippety, TOC dla MD
+    "yzhang.markdown-all-in-one",
+
+    // Markdown Preview Enhanced — rozszerzony podgląd Markdown
+    "shd101wyy.markdown-preview-enhanced",
+
+    // ── DOCKER / CLOUD ────────────────────────────────────────
+
+    // Docker — zarządzanie kontenerami Docker
+    "ms-azuretools.vscode-docker",
+
+    // Azure Tools — integracja z Azure (opcjonalne)
+    "ms-vscode.azure-account",
+
+    // ── WYGLĄD ────────────────────────────────────────────────
+
+    // GitHub Dark Theme — oficjalny motyw GitHub
+    "github.github-vscode-theme",
+
+    // Material Icon Theme — piękne ikony plików
+    "pkief.material-icon-theme",
+
+    // Peacock — koloruje paski VS Code dla różnych projektów
+    "johnpapa.vscode-peacock",
+
+    // ── SNIPPETY I PRODUKTYWNOŚĆ ──────────────────────────────
+
+    // Code Snap — piękne screenshoty kodu
+    "adpyke.codesnap",
+
+    // Bookmarks — zakładki w kodzie do szybkiej nawigacji
+    "alefragnani.bookmarks",
+
+    // Project Manager — zarządzanie wieloma projektami
+    "alefragnani.project-manager",
+
+    // ── .NET / C# ────────────────────────────────────────────
+
+    // C# Dev Kit — pełne wsparcie C# i .NET
+    "ms-dotnettools.csdevkit",
+
+    // .NET Install Tool — instalacja .NET SDK
+    "ms-dotnettools.vscode-dotnet-runtime"
+  ],
+
+  // Rozszerzenia NIE rekomendowane (zbędne, niekompatybilne lub zastąpione)
+  "unwantedRecommendations": [
+    // Zastąpione przez GitLens
+    "donjayamanne.githistory",
+    // Stare rozszerzenie C# — zastąpione przez C# Dev Kit
+    "ms-vscode.csharp"
+  ]
+}
