@@ -99,7 +99,7 @@ $mcpServers = @(
     @{
         Name        = 'magic-ui'
         Package     = '@21st-dev/magic-mcp'
-        Description = 'Generowanie komponentów UI (wymaga MAGIC_UI_API_KEY)'
+        Description = 'Generowanie komponentów UI (opcjonalnie — wymaga MAGIC_UI_API_KEY do działania)'
         Required    = $false
         EnvVar      = 'MAGIC_UI_API_KEY'
     }
