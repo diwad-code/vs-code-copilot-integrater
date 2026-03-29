@@ -17,7 +17,7 @@
 | 🌐 **10 Serwerów MCP** | Narzędzia: pliki, GitHub, wyszukiwarka, baza danych, przeglądarka, UI |
 | 🎯 **5 Skills** | PowerShell, Web Dev, Database, GUI Design, Windows Apps |
 | 🤖 **4 Agenty** | Planista, Dokumentalista, Code Reviewer, Research |
-| 🧭 **Prompt Files** | Gotowe slash commands typu `/kickoff` i `/worklog` dla Copilot Chat |
+| 🧭 **4 Prompt Files** | Gotowe slash commands typu `/kickoff`, `/codex-implementation`, `/gpt54-final-audit`, `/worklog` |
 | 🧩 **Instruction Files** | Reguły `.instructions.md` aktywowane automatycznie dla PowerShell i dokumentacji |
 | 📜 **7 Skryptów PS** | Automatyczna instalacja, wdrożenie, zmienne i weryfikacja |
 | 📋 **3 Szablony** | Plan projektu, Worklog, Dokumentacja techniczna |
@@ -81,6 +81,15 @@ Copy-Item .env.example .env
 ```
 
 Skrypt automatycznie odczyta wartości z `.env`, jeśli plik istnieje.
+
+### Krok 4b: Gdy zmienisz tylko konfigurację MCP
+
+```powershell
+# Bez reinstalacji pakietów npm:
+.\scripts\install-mcp-servers.ps1 -SyncOnly
+```
+
+To synchronizuje `mcp/mcp-config.json` do konfiguracji VS Code i odświeża lokalny plik SQLite.
 
 Pełna instrukcja: [docs/SETUP.md](docs/SETUP.md)
 Bardzo szczegółowe wdrożenie: [docs/VS_CODE_STEP_BY_STEP.md](docs/VS_CODE_STEP_BY_STEP.md)
@@ -178,10 +187,12 @@ automatycznie odczytuje w VS Code. Definiuje on:
 
 ## 🧭 Prompt files i instruction files
 
-Repo wdraża także dwie lekkie sugestie z analizy Gemini/Claude/GPT, które realnie
+Repo wdraża także cztery lekkie prompt files, które realnie
 zwiększają użyteczność bez dokładania ryzykownych uprawnień:
 
 - `.github/prompts/kickoff.prompt.md` — gotowy start zadania i plan wdrożenia
+- `.github/prompts/codex-implementation.prompt.md` — szybkie wejście w implementację pod GPT-5.3-Codex
+- `.github/prompts/gpt54-final-audit.prompt.md` — końcowa kontrola kompletności na GPT-5.4
 - `.github/prompts/worklog.prompt.md` — przygotowanie wpisu do `WORKLOG.md`
 - `.github/instructions/powershell.instructions.md` — dodatkowe reguły dla skryptów PowerShell
 - `.github/instructions/documentation.instructions.md` — reguły dla README, docs i worklogu

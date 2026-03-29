@@ -37,70 +37,31 @@ function Write-Log {
     Write-Host "[$timestamp][$Level] $Message" -ForegroundColor $color
 }
 
-# Lista wszystkich rozszerzeń do zainstalowania
-# Format: 'wydawca.identyfikator-rozszerzenia'
-$extensions = @(
-    # ── AI I COPILOT ──────────────────────────────────────────
-    'github.copilot',               # GitHub Copilot — główny asystent AI
-    'github.copilot-chat',          # GitHub Copilot Chat — czat, agenci, edycje
+function Get-RecommendationList {
+    param([string]$Path)
 
-    # ── FORMATOWANIE I LINTING ────────────────────────────────
-    'esbenp.prettier-vscode',       # Prettier — automatyczne formatowanie
-    'dbaeumer.vscode-eslint',       # ESLint — wykrywanie błędów JS/TS
+    if (-not (Test-Path $Path)) {
+        throw "Nie znaleziono pliku z rekomendacjami rozszerzeń: $Path"
+    }
 
-    # ── GIT ───────────────────────────────────────────────────
-    'eamodio.gitlens',              # GitLens — zaawansowane funkcje Git
-    'mhutchie.git-graph',           # Git Graph — wizualne drzewo commitów
+    # extensions.json jest plikiem JSONC; usuwamy komentarze blokowe i całoliniowe
+    $rawContent = Get-Content -Path $Path -Raw
+    $jsonContent = $rawContent `
+        -replace '(?s)/\*.*?\*/', '' `
+        -replace '(?m)^\s*//.*(?:\r?\n)?', ''
+    $config = $jsonContent | ConvertFrom-Json
 
-    # ── POWERSHELL ────────────────────────────────────────────
-    'ms-vscode.powershell',         # PowerShell — IntelliSense, debugger, Pester
+    if (-not $config.recommendations -or $config.recommendations.Count -eq 0) {
+        throw "Plik $Path nie zawiera żadnych rekomendowanych rozszerzeń."
+    }
 
-    # ── BAZY DANYCH ───────────────────────────────────────────
-    'cweijan.vscode-database-client2',          # Database Client — SQL/Oracle/MySQL
-    'inferrinizzard.prettier-sql-vscode',       # SQL Formatter
+    return @($config.recommendations | ForEach-Object { $_.ToString() })
+}
 
-    # ── WEB DEVELOPMENT ───────────────────────────────────────
-    'ritwickdey.liveserver',            # Live Server — hot-reload dla HTML
-    'formulahendry.auto-rename-tag',    # Auto Rename Tag — pary tagów HTML
-    'formulahendry.auto-close-tag',     # Auto Close Tag
-    'pranaygp.vscode-css-peek',         # CSS Peek — nawigacja do styli
-    'ecmel.vscode-html-css',            # HTML CSS Support
-    'bradlc.vscode-tailwindcss',        # Tailwind CSS IntelliSense
-    'dsznajder.es7-react-js-snippets',  # React snippety
-    'vue.volar',                         # Vue Language Features
-
-    # ── REST API ──────────────────────────────────────────────
-    'rangav.vscode-thunder-client',     # Thunder Client — REST API tester
-    'humao.rest-client',                # REST Client — pliki .http
-
-    # ── PRODUKTYWNOŚĆ ─────────────────────────────────────────
-    'usernamehw.errorlens',             # Error Lens — błędy inline
-    'christian-kohler.path-intellisense',   # Path Intellisense
-    'aaron-bond.better-comments',       # Better Comments — kolorowe TODO/FIXME
-    'gruntfuggly.todo-tree',            # Todo Tree — lista TODO w projekcie
-    'oderwat.indent-rainbow',           # Indent Rainbow — kolorowe wcięcia
-
-    # ── MARKDOWN ──────────────────────────────────────────────
-    'yzhang.markdown-all-in-one',           # Markdown All in One
-    'shd101wyy.markdown-preview-enhanced',  # Markdown Preview Enhanced
-
-    # ── DOCKER ────────────────────────────────────────────────
-    'ms-azuretools.vscode-docker',      # Docker — zarządzanie kontenerami
-
-    # ── WYGLĄD ────────────────────────────────────────────────
-    'github.github-vscode-theme',       # GitHub Dark Theme
-    'pkief.material-icon-theme',        # Material Icon Theme
-    'johnpapa.vscode-peacock',          # Peacock — kolory pasków
-
-    # ── NARZĘDZIA ────────────────────────────────────────────
-    'adpyke.codesnap',                  # Code Snap — screenshoty kodu
-    'alefragnani.bookmarks',            # Bookmarks — zakładki w kodzie
-    'alefragnani.project-manager',      # Project Manager — zarządzanie projektami
-
-    # ── .NET / C# ────────────────────────────────────────────
-    'ms-dotnettools.csdevkit',              # C# Dev Kit
-    'ms-dotnettools.vscode-dotnet-runtime' # .NET Install Tool
-)
+$workspaceRoot = Split-Path -Path $PSScriptRoot -Parent
+$extensionsConfigPath = Join-Path $workspaceRoot '.vscode/extensions.json'
+$extensions = Get-RecommendationList -Path $extensionsConfigPath
+Write-Log "Wczytano listę rozszerzeń z: $extensionsConfigPath" -Level SUCCESS
 
 # Sprawdzamy czy 'code' (VS Code CLI) jest dostępne w PATH
 Write-Log "Sprawdzanie dostępności VS Code CLI..."

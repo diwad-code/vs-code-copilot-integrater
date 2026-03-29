@@ -55,6 +55,8 @@ $requiredFiles = @(
     '.github/copilot-instructions.md',
     '.github/instructions/powershell.instructions.md',
     '.github/instructions/documentation.instructions.md',
+    '.github/prompts/codex-implementation.prompt.md',
+    '.github/prompts/gpt54-final-audit.prompt.md',
     '.github/prompts/kickoff.prompt.md',
     '.github/prompts/worklog.prompt.md',
     '.env.example',
@@ -84,6 +86,32 @@ foreach ($relativePath in $requiredFiles) {
     }
     else {
         Add-Result -Results $results -Status 'FAIL' -Message "Brak pliku: $relativePath"
+    }
+}
+
+$scriptFiles = Get-ChildItem -Path (Join-Path $workspaceRoot 'scripts') -Filter '*.ps1' -File
+foreach ($scriptFile in $scriptFiles) {
+    $tokens = $null
+    $parseErrors = $null
+
+    try {
+        [System.Management.Automation.Language.Parser]::ParseFile(
+            $scriptFile.FullName,
+            [ref]$tokens,
+            [ref]$parseErrors
+        ) | Out-Null
+
+        if ($parseErrors.Count -gt 0) {
+            $errorMessage = ($parseErrors | Select-Object -First 1).Message
+            Add-Result -Results $results -Status 'FAIL' -Message "Skrypt PowerShell ma błąd składni: scripts/$($scriptFile.Name) — $errorMessage"
+            continue
+        }
+
+        $null = Get-Command $scriptFile.FullName -ErrorAction Stop
+        Add-Result -Results $results -Status 'PASS' -Message "Skrypt PowerShell przechodzi parser i ładuje się poprawnie: scripts/$($scriptFile.Name)"
+    }
+    catch {
+        Add-Result -Results $results -Status 'FAIL' -Message "Skrypt PowerShell nie ładuje się poprawnie: scripts/$($scriptFile.Name) — $($_.Exception.Message)"
     }
 }
 
@@ -172,6 +200,13 @@ if (Test-Path $taskConfigPath) {
     }
     else {
         Add-Result -Results $results -Status 'FAIL' -Message 'Task pełnej instalacji nie używa kompletnego skryptu wdrożeniowego'
+    }
+
+    if ($taskConfigContent -match 'SETUP: Synchronizuj konfigurację MCP') {
+        Add-Result -Results $results -Status 'PASS' -Message 'Task synchronizacji konfiguracji MCP istnieje w VS Code'
+    }
+    else {
+        Add-Result -Results $results -Status 'FAIL' -Message 'Brakuje taska synchronizacji konfiguracji MCP w VS Code'
     }
 }
 else {

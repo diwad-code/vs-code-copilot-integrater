@@ -15,7 +15,11 @@ param(
 
     # Pomiń konfigurację zmiennych środowiskowych
     [Parameter(Mandatory=$false)]
-    [switch]$SkipEnvSetup
+    [switch]$SkipEnvSetup,
+
+    # Synchronizuj tylko konfigurację MCP z VS Code bez reinstalacji pakietów npm
+    [Parameter(Mandatory=$false)]
+    [switch]$SyncOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -121,90 +125,150 @@ $mcpServers = @(
     }
 )
 
-# Sprawdzamy czy Node.js jest zainstalowany
-Write-Log "Sprawdzanie Node.js..."
-try {
-    $nodeVersion = (node --version 2>&1).ToString()
-    # Wyodrębniamy numer wersji (usuwa prefiks 'v')
-    $nodeMajor = [int]($nodeVersion -replace 'v(\d+)\..*', '$1')
+function Get-TargetMcpServers {
+    param(
+        [object[]]$Servers,
+        [string[]]$Names
+    )
 
-    if ($nodeMajor -lt 18) {
-        # Node.js jest zbyt stary — MCP wymaga co najmniej v18
-        Write-Log "Node.js v$nodeVersion jest zbyt stary. Wymagana wersja 18+." -Level ERROR
-        Write-Log "Pobierz Node.js LTS ze strony: https://nodejs.org" -Level WARNING
-        exit 1
+    if (-not $Names) {
+        return $Servers
     }
 
-    Write-Log "Node.js $nodeVersion — OK" -Level SUCCESS
-}
-catch {
-    Write-Log "Node.js nie jest zainstalowany!" -Level ERROR
-    Write-Log "Pobierz Node.js LTS ze strony: https://nodejs.org" -Level WARNING
-
-    # Próbujemy zainstalować przez winget (Windows Package Manager)
-    if (Get-Command winget -ErrorAction SilentlyContinue) {
-        Write-Log "Próbuję zainstalować Node.js przez winget..."
-        winget install OpenJS.NodeJS.LTS
-    }
-    else {
-        exit 1
-    }
+    return $Servers | Where-Object { $_.Name -in $Names }
 }
 
-# Sprawdzamy czy npm jest dostępne po weryfikacji Node.js
-try {
-    $npmVersion = (npm --version 2>&1).ToString()
-    Write-Log "npm $npmVersion — OK" -Level SUCCESS
+function Sync-VsCodeMcpConfiguration {
+    param(
+        [string]$SourcePath,
+        [string]$DestinationPath,
+        [string]$SqlitePath
+    )
+
+    if (-not (Test-Path $SourcePath)) {
+        throw "Nie znaleziono pliku źródłowego: $SourcePath"
+    }
+
+    $mcpConfig = Get-Content -Path $SourcePath -Raw | ConvertFrom-Json
+    if (-not $mcpConfig.servers) {
+        throw 'Plik mcp-config.json nie zawiera sekcji servers.'
+    }
+
+    $sqliteDirectory = Split-Path -Path $SqlitePath -Parent
+    if (-not (Test-Path $sqliteDirectory)) {
+        New-Item -ItemType Directory -Path $sqliteDirectory -Force | Out-Null
+    }
+
+    if (-not (Test-Path $SqlitePath)) {
+        New-Item -ItemType File -Path $SqlitePath -Force | Out-Null
+        Write-Log "Utworzono lokalny plik SQLite: $SqlitePath" -Level SUCCESS
+    }
+
+    if (-not $DestinationPath) {
+        Write-Log 'Brak zmiennej APPDATA — nie mogę skopiować konfiguracji MCP do VS Code.' -Level WARNING
+        return
+    }
+
+    $destinationDirectory = Split-Path -Path $DestinationPath -Parent
+    if (-not (Test-Path $destinationDirectory)) {
+        New-Item -ItemType Directory -Path $destinationDirectory -Force | Out-Null
+    }
+
+    if (Test-Path $DestinationPath) {
+        Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
+        $backup = "$DestinationPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+        Copy-Item $DestinationPath $backup
+        Write-Log "Backup zapisano: $backup" -Level SUCCESS
+    }
+
+    Copy-Item $SourcePath $DestinationPath -Force
+    Write-Log "Konfiguracja MCP skopiowana do: $DestinationPath" -Level SUCCESS
 }
-catch {
-    Write-Log 'npm nie jest dostępne mimo obecności Node.js. Zainstaluj ponownie Node.js LTS.' -Level ERROR
+
+if ($SyncOnly -and $Only) {
+    Write-Log 'Parametry -SyncOnly oraz -Only nie mogą być użyte razem.' -Level ERROR
     exit 1
 }
 
-# Filtrujemy serwery jeśli podano -Only parametr
-$serversToInstall = if ($Only) {
-    # Instalujemy tylko wymienione serwery
-    $mcpServers | Where-Object { $_.Name -in $Only }
-}
-else {
-    # Instalujemy wszystkie serwery
-    $mcpServers
-}
-
+$serversToInstall = Get-TargetMcpServers -Servers $mcpServers -Names $Only
 if (-not $serversToInstall) {
     Write-Log 'Parametr -Only nie wskazał żadnego znanego serwera MCP.' -Level ERROR
     exit 1
 }
 
-Write-Log "Instalacja $($serversToInstall.Count) serwerów MCP..."
-Write-Host ""
-
-# Liczniki podsumowania
 $installed  = 0
 $failed     = 0
 
-foreach ($server in $serversToInstall) {
-    Write-Log "Instaluję MCP: $($server.Name) — $($server.Description)"
-    $packageSpecifier = Resolve-NpmPackageSpecifier -Package $server.Package
-
+if ($SyncOnly) {
+    Write-Log 'Tryb SyncOnly — pomijam reinstalację pakietów npm i synchronizuję tylko konfigurację MCP.' -Level WARNING
+}
+else {
+    # Sprawdzamy czy Node.js jest zainstalowany
+    Write-Log "Sprawdzanie Node.js..."
     try {
-        if ($PSCmdlet.ShouldProcess($packageSpecifier, "npm install -g")) {
-            # Instalujemy pakiet globalnie przez npm
-            $output = npm install -g $packageSpecifier 2>&1
+        $nodeVersion = (node --version 2>&1).ToString()
+        # Wyodrębniamy numer wersji (usuwa prefiks 'v')
+        $nodeMajor = [int]($nodeVersion -replace 'v(\d+)\..*', '$1')
 
-            if ($LASTEXITCODE -eq 0) {
-                Write-Log "Zainstalowano: $($server.Name)" -Level SUCCESS
-                $installed++
-            }
-            else {
-                Write-Log "Błąd instalacji $($server.Name): $output" -Level ERROR
-                $failed++
-            }
+        if ($nodeMajor -lt 18) {
+            # Node.js jest zbyt stary — MCP wymaga co najmniej v18
+            Write-Log "Node.js v$nodeVersion jest zbyt stary. Wymagana wersja 18+." -Level ERROR
+            Write-Log "Pobierz Node.js LTS ze strony: https://nodejs.org" -Level WARNING
+            exit 1
         }
+
+        Write-Log "Node.js $nodeVersion — OK" -Level SUCCESS
     }
     catch {
-        Write-Log "Wyjątek przy instalacji $($server.Name): $_" -Level ERROR
-        $failed++
+        Write-Log "Node.js nie jest zainstalowany!" -Level ERROR
+        Write-Log "Pobierz Node.js LTS ze strony: https://nodejs.org" -Level WARNING
+
+        # Próbujemy zainstalować przez winget (Windows Package Manager)
+        if (Get-Command winget -ErrorAction SilentlyContinue) {
+            Write-Log "Próbuję zainstalować Node.js przez winget..."
+            winget install OpenJS.NodeJS.LTS
+        }
+        else {
+            exit 1
+        }
+    }
+
+    # Sprawdzamy czy npm jest dostępne po weryfikacji Node.js
+    try {
+        $npmVersion = (npm --version 2>&1).ToString()
+        Write-Log "npm $npmVersion — OK" -Level SUCCESS
+    }
+    catch {
+        Write-Log 'npm nie jest dostępne mimo obecności Node.js. Zainstaluj ponownie Node.js LTS.' -Level ERROR
+        exit 1
+    }
+
+    Write-Log "Instalacja $($serversToInstall.Count) serwerów MCP..."
+    Write-Host ""
+
+    foreach ($server in $serversToInstall) {
+        Write-Log "Instaluję MCP: $($server.Name) — $($server.Description)"
+        $packageSpecifier = Resolve-NpmPackageSpecifier -Package $server.Package
+
+        try {
+            if ($PSCmdlet.ShouldProcess($packageSpecifier, "npm install -g")) {
+                # Instalujemy pakiet globalnie przez npm
+                $output = npm install -g $packageSpecifier 2>&1
+
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Log "Zainstalowano: $($server.Name)" -Level SUCCESS
+                    $installed++
+                }
+                else {
+                    Write-Log "Błąd instalacji $($server.Name): $output" -Level ERROR
+                    $failed++
+                }
+            }
+        }
+        catch {
+            Write-Log "Wyjątek przy instalacji $($server.Name): $_" -Level ERROR
+            $failed++
+        }
     }
 }
 
@@ -262,56 +326,7 @@ $mcpConfigSource = Join-Path $PSScriptRoot "..\mcp\mcp-config.json"
 $sqliteDatabasePath = Join-Path $PSScriptRoot "..\data\local.db"
 
 try {
-    if (Test-Path $mcpConfigSource) {
-        $mcpConfig = Get-Content -Path $mcpConfigSource -Raw | ConvertFrom-Json
-        if (-not $mcpConfig.servers) {
-            throw 'Plik mcp-config.json nie zawiera sekcji servers.'
-        }
-
-        $sqliteDirectory = Split-Path -Path $sqliteDatabasePath -Parent
-        if (-not (Test-Path $sqliteDirectory)) {
-            New-Item -ItemType Directory -Path $sqliteDirectory -Force | Out-Null
-        }
-
-        if (-not (Test-Path $sqliteDatabasePath)) {
-            New-Item -ItemType File -Path $sqliteDatabasePath -Force | Out-Null
-            Write-Log "Utworzono lokalny plik SQLite: $sqliteDatabasePath" -Level SUCCESS
-        }
-
-        if (-not $vscodeMcpPath) {
-            Write-Log 'Brak zmiennej APPDATA — nie mogę skopiować konfiguracji MCP do VS Code.' -Level WARNING
-        }
-        else {
-            # Upewniamy się, że katalog docelowy istnieje (pierwsza konfiguracja VS Code)
-            $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
-            if (-not (Test-Path $vscodeMcpDir)) {
-                New-Item -ItemType Directory -Path $vscodeMcpDir -Force | Out-Null
-            }
-
-            if (Test-Path $vscodeMcpPath) {
-                # Sprawdzamy, czy już istnieje konfiguracja - nie nadpisujemy bez pytania
-                Write-Log "Plik mcp.json już istnieje w VS Code. Tworzę kopię zapasową..." -Level WARNING
-
-                # Tworzymy backup istniejącej konfiguracji z timestampem
-                $backup = "$vscodeMcpPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
-                Copy-Item $vscodeMcpPath $backup
-                Write-Log "Backup zapisano: $backup" -Level SUCCESS
-            }
-
-            # Upewniamy się że folder docelowy istnieje
-            $vscodeMcpDir = Split-Path -Path $vscodeMcpPath -Parent
-            if (-not (Test-Path $vscodeMcpDir)) {
-                New-Item -Path $vscodeMcpDir -ItemType Directory -Force | Out-Null
-            }
-
-            # Kopiujemy nową konfigurację
-            Copy-Item $mcpConfigSource $vscodeMcpPath -Force
-            Write-Log "Konfiguracja MCP skopiowana do: $vscodeMcpPath" -Level SUCCESS
-        }
-    }
-    else {
-        Write-Log "Nie znaleziono pliku źródłowego: $mcpConfigSource" -Level WARNING
-    }
+    Sync-VsCodeMcpConfiguration -SourcePath $mcpConfigSource -DestinationPath $vscodeMcpPath -SqlitePath $sqliteDatabasePath
 }
 catch {
     Write-Log "Nie udało się skopiować konfiguracji MCP: $_" -Level WARNING
@@ -328,4 +343,9 @@ Write-Host "  Zainstalowano:  $installed" -ForegroundColor Green
 Write-Host "  Błędy:          $failed" -ForegroundColor $(if ($failed -gt 0) { 'Red' } else { 'Green' })
 Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""
-Write-Log "Uruchom ponownie VS Code aby załadować nowe narzędzia MCP" -Level SUCCESS
+if ($SyncOnly) {
+    Write-Log "Synchronizacja konfiguracji MCP zakończona. Jeśli VS Code było otwarte, przeładuj okno lub uruchom aplikację ponownie." -Level SUCCESS
+}
+else {
+    Write-Log "Uruchom ponownie VS Code aby załadować nowe narzędzia MCP" -Level SUCCESS
+}

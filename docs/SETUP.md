@@ -117,6 +117,14 @@ npm install -g @21st-dev/magic-mcp
 Copy-Item mcp\mcp-config.json "$env:APPDATA\Code\User\mcp.json"
 ```
 
+**Gdy zmieniasz tylko konfigurację MCP, a pakiety są już zainstalowane:**
+```powershell
+.\scripts\install-mcp-servers.ps1 -SyncOnly
+```
+
+To jest najszybszy sposób, aby zsynchronizować `mcp/mcp-config.json` do VS Code
+bez ponownego instalowania wszystkich serwerów npm.
+
 ### Krok 5: Zmienne środowiskowe
 
 Ustaw wymagane zmienne środowiskowe (niezbędne dla niektórych MCP serwerów):
@@ -205,6 +213,7 @@ gh copilot suggest -t shell "Zaproponuj komendę do ..."
 
 W projekcie dostępny jest task:
 - `SETUP: Zainstaluj Copilot CLI`
+- `SETUP: Synchronizuj konfigurację MCP`
 - `SETUP: Pełna instalacja`
 
 Uruchom: `Terminal > Run Task` i wybierz ten task, aby szybko przygotować CLI.
@@ -251,8 +260,10 @@ npm list -g --depth=0 2>$null | Select-String "modelcontextprotocol|context7|pla
 2. Wpisz: `@workspace Cześć! Jakie narzędzia MCP masz dostępne?`
 3. Copilot powinien wymienić dostępne serwery MCP
 4. Możesz też użyć prompt files:
-   - `/kickoff` — rozpoczęcie zadania od analizy i planu
-   - `/worklog` — przygotowanie wpisu do `WORKLOG.md`
+    - `/kickoff` — rozpoczęcie zadania od analizy i planu
+    - `/codex-implementation` — wejście w tryb implementacyjny pod GPT-5.3-Codex
+    - `/gpt54-final-audit` — końcowy audyt kompletności pod GPT-5.4
+    - `/worklog` — przygotowanie wpisu do `WORKLOG.md`
 
 ### Dodatkowe warstwy instrukcji Copilota
 
@@ -261,6 +272,8 @@ Repo zawiera również:
 - `.github/instructions/powershell.instructions.md`
 - `.github/instructions/documentation.instructions.md`
 - `.github/prompts/kickoff.prompt.md`
+- `.github/prompts/codex-implementation.prompt.md`
+- `.github/prompts/gpt54-final-audit.prompt.md`
 - `.github/prompts/worklog.prompt.md`
 
 Te pliki uzupełniają główne `copilot-instructions.md` o instrukcje per typ pliku
